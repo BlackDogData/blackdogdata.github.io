@@ -1,0 +1,54 @@
+CREATE TABLE BIT_DB.Spotifydata (
+    id INTEGER PRIMARY KEY,
+    artist_name VARCHAR(255) NOT NULL,
+    track_name VARCHAR(255) NOT NULL,
+    track_id VARCHAR(255) NOT NULL,
+    popularity INTEGER NOT NULL,
+    danceability DECIMAL(4,3) NOT NULL,
+    energy DECIMAL(4,3) NOT NULL,
+    song_key INTEGER NOT NULL,
+    loudness DECIMAL(5,3) NOT NULL,
+    song_mode INTEGER NOT NULL,
+    speechiness DECIMAL(5,4) NOT NULL,
+    acousticness DECIMAL(6,5) NOT NULL,
+    instrumentalness DECIMAL(8,7) NOT NULL,
+    liveness DECIMAL(5,4) NOT NULL,
+    valence DECIMAL(4,3) NOT NULL,
+    tempo DECIMAL(6,3) NOT NULL,
+    duration_ms INTEGER NOT NULL,
+    time_signature INTEGER NOT NULL,
+    INDEX (artist_name),            -- Index on artist_name for faster lookup
+    INDEX (popularity)              -- Index on popularity for sorting or filtering
+);
+-- Calculates the average danceability by artist and track.
+SELECT 
+    artist_name,
+    track_name,
+    AVG(danceability) AS avg_danceability
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name, track_name;
+
+-- Retrieves the top 10 artists based on total popularity.
+SELECT 
+    artist_name,
+    SUM(popularity) AS total_popularity
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY total_popularity DESC
+LIMIT 10;
+
+-- Finds the artist who released the longest song.
+SELECT 
+    artist_name,
+    track_name,
+    duration_ms
+FROM BIT_DB.Spotifydata
+ORDER BY duration_ms DESC
+LIMIT 1;
+
+-- Calculates the average danceability for the 10 most popular songs.
+SELECT 
+    AVG(danceability) AS avg_danceability
+FROM BIT_DB.Spotifydata
+ORDER BY popularity DESC
+LIMIT 5;
