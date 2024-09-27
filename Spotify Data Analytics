@@ -18,7 +18,7 @@ CREATE TABLE BIT_DB.Spotifydata (
     duration_ms INTEGER NOT NULL,
     time_signature INTEGER NOT NULL,
     INDEX (artist_name),            -- Index on artist_name for faster lookup
-    INDEX (popularity)              -- Index on popularity for sorting or filtering
+    INDEX (popularity)              -- Index on popularity for filtering
 );
 -- Calculates the average danceability by artist and track.
 SELECT 
