@@ -1,0 +1,55 @@
+-- Example 1: Counts valid orders where orderID is 6 characters long and excludes 'Order ID' entries from the JanSales table.
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE LENGTH(orderID) = 6
+    AND orderID != 'Order ID';
+
+-- Example 2: Counts the number of iPhone orders where orderID is 6 characters long and excludes 'Order ID' entries from the JanSales table.
+SELECT COUNT(orderid)
+FROM BIT_DB.JanSales
+WHERE Product = 'iPhone'
+    AND LENGTH(orderid) = 6
+    AND orderid != 'Order ID';
+
+-- Example 3: Retrieves 20 distinct account numbers from customers with matching 6-character orderIDs in FebSales, excluding 'Order ID'.
+SELECT DISTINCT acctnum
+FROM BIT_DB.customers cust
+JOIN BIT_DB.FebSales Feb
+    ON cust.order_id = Feb.orderid
+WHERE LENGTH(orderid) = 6
+    AND orderid != 'Order ID'
+LIMIT 20;
+
+-- Example 4: Retrieves the product with the lowest price from JanSales, grouping by product and ordering by the minimum price in ascending order.
+SELECT product, MIN(price)
+FROM BIT_DB.JanSales Jan
+GROUP BY product
+ORDER BY MIN(price) ASC
+LIMIT 1;
+
+-- Example 5: Correctly calculates total revenue for each product by summing quantity * price for each sale.
+SELECT SUM(quantity * price) AS revenue, 
+       product
+FROM BIT_DB.JanSales
+GROUP BY product
+LIMIT 5;
+
+-- Example 6: Calculates total quantity and revenue for each product sold at the specified location, ensuring accurate revenue by summing quantity * price for each product.
+SELECT
+    SUM(Quantity) AS total_quantity,
+    product,
+    SUM(Quantity * price) AS revenue
+FROM BIT_DB.FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+-- Example 7: Counts distinct customer account numbers and calculates the average order value for orders with more than 2 items, where the orderID is 6 characters long and excludes invalid 'Order ID' entries.
+SELECT
+    COUNT(DISTINCT cust.acctnum) AS distinct_customers,
+    AVG(Feb.Quantity * Feb.price) AS avg_order_value
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON Feb.orderid = cust.order_id
+WHERE Feb.Quantity > 2
+    AND LENGTH(Feb.orderid) = 6
+    AND Feb.orderid != 'Order ID';
