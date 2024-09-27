@@ -54,8 +54,42 @@ WHERE Feb.Quantity > 2
     AND LENGTH(Feb.orderid) = 6
     AND Feb.orderid != 'Order ID';
 
--- Example 8.) Sums the quantity of all orders placed on February 18, 2019.
-SELECT Product, SUM(quantity)
+-- Example 8: Sums the quantity of all orders placed in locations containing 'Los Angeles'.
+SELECT Product, SUM(quantity) AS total_sold
 FROM BIT_DB.FebSales
 WHERE location LIKE '%Los Angeles%'
 GROUP BY Product;
+
+-- Example 9: Retrieves New York locations that received at least 3 orders in January using HAVING.
+SELECT location, COUNT(orderID) AS total_orders
+FROM BIT_DB.JanSales
+WHERE location LIKE '%New York%'
+GROUP BY location
+HAVING total_orders >= 3;
+
+-- Example 10: Retrieves the total quantity sold for each type of headphone in February.
+SELECT Product, SUM(quantity) AS total_sold
+FROM BIT_DB.FebSales
+WHERE Product LIKE '%Headphone%'
+GROUP BY Product;
+
+-- Example 11: Calculates the average amount spent per account in February by dividing total revenue by the number of distinct accounts, rounded to two decimal places.
+SELECT 
+    ROUND(SUM(quantity * price) / COUNT(DISTINCT cust.acctnum), 2) AS avg_amount_spent_per_account
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust ON Feb.orderid = cust.order_id;
+
+-- Example 12: Calculates the average quantity of products purchased per account in February.
+SELECT 
+    ROUND(SUM(quantity) / COUNT(DISTINCT cust.acctnum), 2) AS avg_quantity_per_account
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust ON Feb.orderid = cust.order_id;
+
+-- Example 13: Retrieves the product with the highest total revenue in January from the JanSales table.
+SELECT 
+    Product, 
+    SUM(quantity * price) AS total_revenue
+FROM BIT_DB.JanSales
+GROUP BY Product
+ORDER BY total_revenue DESC
+LIMIT 1;
