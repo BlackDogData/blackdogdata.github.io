@@ -53,3 +53,9 @@ ON Feb.orderid = cust.order_id
 WHERE Feb.Quantity > 2
     AND LENGTH(Feb.orderid) = 6
     AND Feb.orderid != 'Order ID';
+
+-- Example 8.) Sums the quantity of all orders placed on February 18, 2019.
+SELECT Product, SUM(quantity)
+FROM BIT_DB.FebSales
+WHERE location LIKE '%Los Angeles%'
+GROUP BY Product;
