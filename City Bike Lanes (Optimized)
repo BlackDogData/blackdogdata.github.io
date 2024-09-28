@@ -1,0 +1,42 @@
+CREATE TABLE BIT_DB.CityBikeLanes (
+    id INTEGER PRIMARY KEY,                            -- Primary key for unique identification.
+    year_installed YEAR NOT NULL,                      -- Use YEAR if available, else SMALLINT.
+    year_updated YEAR,                                 -- Allow NULL for optional updates.
+    street VARCHAR(100) NOT NULL,                      -- Reduced size to 100 characters for street names.
+    width_feet DECIMAL(3,1) NOT NULL,                  -- Allows fractional values for lane width.
+    safetyrating DECIMAL(2,1) NOT NULL,                -- Allows fractional safety ratings (e.g., 4.5).
+    protected BOOLEAN NOT NULL                         -- Boolean value to indicate protection status.
+);
+
+-- Optional: Adding indexes for commonly queried columns.
+CREATE INDEX idx_street ON BIT_DB.CityBikeLanes(street);    -- For faster lookups by street.
+CREATE INDEX idx_year_installed ON BIT_DB.CityBikeLanes(year_installed);  -- For queries involving year installed.
+CREATE INDEX idx_safetyrating ON BIT_DB.CityBikeLanes(safetyrating);  -- For queries based on safety rating.
+
+-- Insert multiple rows into the CityBikeLanes table.
+INSERT INTO BIT_DB.CityBikeLanes (id, year_installed, year_updated, street, width_feet, safetyrating, protected)
+VALUES
+(1, 2012, 2020, 'Chestnut', 4, 4, TRUE),
+(2, 2016, 2020, 'Walnut', 4, 3.8, TRUE),
+(3, 2011, 2020, 'Market', 3.5, 2, FALSE),
+(4, 2008, 2020, 'Locust', 4, 5, TRUE),
+(5, 2002, 2020, 'South', 4.5, 4.3, FALSE),
+(6, 2012, 2021, '18th', 4, 4.7, TRUE),
+(7, 2016, 2021, '2nd', 4, 3.7, TRUE),
+(8, 2011, 2021, 'Lombard', 3.5, 2.2, FALSE),
+(9, 2008, 2021, 'Pine', 4, 4.9, TRUE),
+(10, 2002, 2021, 'Tasker', 4.5, 4.8, FALSE),
+-- Continue with other rows.
+(60, 2002, 2021, 'Mouse', 4.5, 4.3, FALSE);
+
+-- Query to retrieve safety ratings for each street and provide recommendations based on the average safety rating.
+SELECT 
+    street, 
+    safetyrating,
+    AVG(safetyrating) OVER (PARTITION BY street) AS "Average_safety_rating",
+    CASE 
+        WHEN AVG(safetyrating) OVER (PARTITION BY street) >= 4 THEN 'Leave As-Is'
+        WHEN AVG(safetyrating) OVER (PARTITION BY street) < 2.5 THEN 'Remove'
+        ELSE 'Improvements Needed'
+    END AS "Recommendation"
+FROM BIT_DB.CityBikeLanes;
