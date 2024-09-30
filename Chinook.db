@@ -1,0 +1,94 @@
+-- Retrieve customers who are not in the US. (Option 1)
+SELECT CustomerId, FirstName || ' ' || LastName AS FullName, Country
+FROM customers
+WHERE Country != 'USA';
+
+-- Retrieve customers who are not in the US. (Option 2)
+SELECT FirstName, LastName, CustomerId, Country 
+FROM customers 
+WHERE Country != 'USA';
+
+-- Show only customers from Brazil.
+SELECT * 
+FROM customers
+WHERE Country = 'Brazil';
+
+-- Find the invoices of customers who are from Brazil.
+SELECT TRIM(cust.FirstName || ' ' || cust.LastName) AS FullName, 
+       inv.InvoiceId, 
+       inv.BillingCountry, 
+       inv.InvoiceDate
+FROM invoices inv
+JOIN customers cust ON inv.CustomerId = cust.CustomerId
+WHERE inv.BillingCountry = 'Brazil';
+
+-- Show employees with the title 'Sales Support Agent'.
+SELECT * 
+FROM Employees
+WHERE Title = 'Sales Support Agent';
+
+-- Retrieve DISTINCT list of billing countries from the Invoice table.
+SELECT DISTINCT BillingCountry 
+FROM Invoices;
+
+-- Show invoices associated with each sales agent.
+SELECT emp.LastName, emp.FirstName, inv.InvoiceId
+FROM Employees emp 
+JOIN Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN Invoices inv ON inv.CustomerId = cust.CustomerId;
+
+-- Show the invoice total, customer name, country, and sales agent name for all invoices and customers.
+SELECT emp.LastName, emp.FirstName, cust.FirstName, cust.LastName, cust.Country, inv.Total
+FROM Employees emp 
+JOIN Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN Invoices inv ON inv.CustomerId = cust.CustomerId;
+
+-- Total number of invoices from 2009.
+SELECT COUNT(*)
+FROM Invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+-- Total sales for 2009.
+SELECT SUM(Total)
+FROM Invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+-- Purchased track name with each invoice line ID.
+SELECT t.Name, i.InvoiceLineId
+FROM Invoice_items i
+INNER JOIN Tracks t ON i.TrackId = t.TrackId;
+
+-- Retrieve artist name, track name, and invoice line ID. LEFT JOINs ensure all invoice items and albums are included, even without matching tracks or artists. INNER JOIN ensures only tracks with albums are included.
+SELECT ar.Name AS Artist, t.Name AS Track, i.InvoiceLineId
+FROM Invoice_items i
+LEFT JOIN Tracks t ON i.TrackID = t.TrackID
+INNER JOIN Albums a ON t.AlbumID = a.AlbumID
+LEFT JOIN Artists ar ON a.ArtistID = ar.ArtistID;
+
+-- Show all tracks including album name, media type, and genre.
+SELECT t.Name AS TrackName, a.Title AS AlbumTitle, m.Name AS MediaType, g.Name AS Genre
+FROM Tracks t
+INNER JOIN Albums a ON a.AlbumId = t.AlbumId
+INNER JOIN Media_Types m ON m.MediaTypeId = t.MediaTypeId
+INNER JOIN Genres g ON g.GenreId = t.GenreId;
+
+-- Total sales made by each sales agent.
+SELECT emp.FirstName, emp.LastName,
+    ROUND(SUM(Inv.Total), 2) AS TotalSales
+FROM Employees emp
+INNER JOIN Customers cust ON cust.SupportRepId = emp.EmployeeId
+INNER JOIN Invoices inv ON inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent'
+GROUP BY emp.FirstName, emp.LastName;
+
+-- Sales agent with the most sales in 2009.
+SELECT emp.FirstName, emp.LastName,
+       ROUND(SUM(Inv.Total), 2) AS TotalSales
+FROM Employees emp
+INNER JOIN Customers cust ON cust.SupportRepId = emp.EmployeeId
+INNER JOIN Invoices inv ON inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent'
+AND inv.InvoiceDate LIKE '2009%'
+GROUP BY emp.FirstName, emp.LastName
+ORDER BY TotalSales DESC
+LIMIT 1;
