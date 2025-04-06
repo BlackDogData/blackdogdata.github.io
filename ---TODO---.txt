@@ -28,3 +28,4 @@
 
 ***cHAOS mODE***
 -nEED tO bUILD iT oUT sO tHAT iT dOES MORE, aLL iT dOES rIGHT nOW iS vISUALLY gLITCH.
+-***Visual Glitch carries on throughout the terminal if you dont type 'clear' or 'exit'.***

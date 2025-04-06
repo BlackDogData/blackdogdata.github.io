@@ -110,7 +110,7 @@ Example usage: 'entropy this is some text to analyze'
           execute: () => {
             return `
 <span class="system-message">╒══════════════════════════════════════════════════════════╕</span>
-<span class="system-message">│                     slowHell TERMINAL                    │</span>
+<span class="system-message">│                     slowHell.terminal_help               │</span>
 <span class="system-message">╘══════════════════════════════════════════════════════════╛</span>
 
 <span class="system-message">SYSTEM COMMANDS:</span>
@@ -120,25 +120,23 @@ Example usage: 'entropy this is some text to analyze'
 <span class="system-message">  exit</span>     - Return to main page
 
 <span class="system-message">CORE UTILITIES:</span>
-<span class="system-message">  echo [text]</span>    - Display text in terminal (Example: echo Hello World)
-<span class="system-message">  date</span>           - Display current date and time 
+<span class="system-message">  echo</span>    - returned an echo from the void (Example: echo Hello World)
+<span class="system-message">  date</span>    - Display current date and time 
 
 <span class="system-message">ENTROPY SYSTEM:</span>
-<span class="system-message">  entropy [text]</span> - Calculate Shannon entropy of input text
-<span class="system-message">                   Measures information density/unpredictability
-<span class="system-message">                   Example: entropy The quick brown fox jumps</span>
-<span class="system-message">  chaos</span>          - Enter slowHell.recursive_mode (visual glitch effects)
+<span class="system-message">  entropy</span> - Calculate Shannon entropy of input text
+<span class="system-message">  chaos</span>   - Enter slowHell.recursive_mode (visual glitch effects)
 
 <span class="system-message">CONTENT:</span>
-<span class="system-message">  about</span>          - Information about slowhell.xyz
-<span class="system-message">  sonnet</span>         - Display the Sonnet of slowHell
+<span class="system-message">  about</span>   - Information about slowhell.xyz
+<span class="system-message">  sonnet</span>  - Display the Sonnet of slowHell
 
-<span class="system-message">For more detailed information on any command, type: help [command]</span>
+<span class="system-message">For more detailed information on any command, type: help [command]</span> <!--(Need to expand on this. Maybe begin creating documentation for the commands + a working glossary.)-->
 `;
           }
         },
         clear: {
-          description: 'Clear the terminal screen',
+          description: 'Clear the terminal screen. (Useful for clearing the terminal of effects.)',
           execute: () => {
             output.innerHTML = '';
             // If chaos mode is active, stop it
