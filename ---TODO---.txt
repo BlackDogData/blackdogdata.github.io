@@ -1,0 +1,30 @@
+---TODO---
+
+-Add more to help command in terminal. (it's too vague)
+-Add a logging function to the terminal + a log file that can be viewed in by the admin if hallucinations are reported.
+-Fix ASCII art in terminal
+-Add a function that kills the current chat session and results to a fresh session. (This will be used to prevent hallucinations from carrying over to the next session.)
+-Figure out what the point of having echo in the terminal is. This can we a subtle way to link PsyPy?
+-Figure out how to implement entropyScore into this. We are already measuring for Shannon Entropy but I want to harness this data in a way that is usabe in the ACT_API.
+-Tweak Chaos Mode to do more stuffs.
+-Take out date command? (Why do we need it?)
+-Work on about me section in the terminal. (The regular one that everything else is routed to is fine.)
+-Get rid of fake UI buttons in the top left hand corner of the terminal.
+
+***tERMINAL***
+-Work on the Sonnet of Darkness, it needs a lot of work.
+
+***aBOUT ME***
+
+
+***pROJECTS***
+
+
+***404***
+
+
+***iNDEX***
+
+
+***cHAOS mODE***
+-nEED tO bUILD iT oUT sO tHAT iT dOES MORE, aLL iT dOES rIGHT nOW iS vISUALLY gLITCH.

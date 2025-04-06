@@ -1,0 +1,108 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>slowhell.xyz</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Sans+Devanagari:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body class="landing-body">
+  <div class="rain-container" id="rainContainer"></div>
+  <div class="content">
+    <h1>slowhell.xyz | coming soon</h1>
+    <div class="button-container">
+      <a href="./about.html" class="button">slowHell.About</a>
+      <a href="./projects.html" class="button">slowHell.Projects</a>
+      <a href="./terminal.html" class="button">slowHell.Terminal</a>
+    </div>
+  </div>
+
+  <a href="index.html" class="site-sigil">
+    <img src="favicon.svg" alt="slowhell sigil" width="40" height="40">
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('rainContainer');
+      const phrases = [
+        { text: 'slow hell', language: 'english' },
+        { text: 'الجحيم البطيء', language: 'arabic' },
+        { text: 'धीमा नरक', language: 'sanskrit' }
+      ];
+      
+      // Track occupied horizontal positions
+      const columnWidth = 10; // Width of columns in percentage
+      const columns = Math.floor(100 / columnWidth);
+      const columnUsage = new Array(columns).fill(0); // Tracks when a column was last used
+      
+      function getAvailableColumn() {
+        // Find the column that hasn't been used for the longest time
+        let minUsage = Infinity;
+        let selectedColumn = 0;
+        
+        for (let i = 0; i < columns; i++) {
+          if (columnUsage[i] < minUsage) {
+            minUsage = columnUsage[i];
+            selectedColumn = i;
+          }
+        }
+        
+        // Mark this column as recently used
+        columnUsage[selectedColumn] = Date.now();
+        return selectedColumn;
+      }
+      
+      function createRainText() {
+        const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+        const text = document.createElement('span');
+        text.textContent = phrase.text;
+        text.classList.add('rain-text', phrase.language);
+        
+        // Get column and calculate position with small random offset
+        const column = getAvailableColumn();
+        const basePosition = column * columnWidth;
+        const offset = (Math.random() * columnWidth * 0.8); // Random offset within column
+        const left = basePosition + offset;
+        
+        const duration = 7 + Math.random() * 8; // 7-15 seconds
+        const size = 1.2 + Math.random() * 1.5; // 1.2-2.7em - bigger text
+        const opacity = 0.4 + Math.random() * 0.4; // 0.4-0.8 - more prominent
+        
+        // Occasionally make it blood red (10% chance)
+        if (Math.random() < 0.25) {
+          text.classList.add('blood');
+        }
+        
+        text.style.left = `${left}%`;
+        text.style.animationDuration = `${duration}s`;
+        text.style.fontSize = `${size}em`;
+        text.style.opacity = opacity;
+        
+        container.appendChild(text);
+        
+        // Remove the element when animation completes
+        setTimeout(() => {
+          text.remove();
+        }, duration * 1000);
+      }
+      
+      // Initial batch - but staggered more to avoid immediate overlap
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          createRainText();
+        }, i * 250);
+      }
+      
+      // Continue creating rain - balanced frequency to avoid overcrowding
+      setInterval(() => {
+        createRainText();
+      }, 180);
+    });
+  </script>
+</body>
+</html>
