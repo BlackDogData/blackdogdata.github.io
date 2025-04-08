@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Sans+Devanagari:wght@300;400&display=swap" rel="stylesheet">
+  <script src="void-whispers.js"></script>
 </head>
 <body class="landing-body">
   <div class="rain-container" id="rainContainer"></div>
@@ -25,7 +26,7 @@
   <a href="index.html" class="site-sigil">
     <img src="favicon.svg" alt="slowhell sigil" width="40" height="40">
   </a>
-
+  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('rainContainer');
@@ -34,6 +35,94 @@
         { text: 'الجحيم البطيء', language: 'arabic' },
         { text: 'धीमा नरक', language: 'sanskrit' }
       ];
+      
+      // Check if terminal was minimized
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('minimized') === 'true') {
+        // Create minimized terminal indicator
+        const minimizedTerminal = document.createElement('div');
+        minimizedTerminal.className = 'minimized-terminal';
+        minimizedTerminal.innerHTML = '<img src="favicon.svg" alt="Terminal">';
+        minimizedTerminal.title = 'Restore Terminal';
+        
+        // Add hover effect with terminal title
+        const terminalTitle = document.createElement('div');
+        terminalTitle.style.position = 'absolute';
+        terminalTitle.style.top = '-30px';
+        terminalTitle.style.left = '50%';
+        terminalTitle.style.transform = 'translateX(-50%)';
+        terminalTitle.style.backgroundColor = '#181818';
+        terminalTitle.style.color = '#ccc';
+        terminalTitle.style.padding = '5px 10px';
+        terminalTitle.style.borderRadius = '4px';
+        terminalTitle.style.fontSize = '0.8em';
+        terminalTitle.style.opacity = '0';
+        terminalTitle.style.transition = 'opacity 0.3s ease';
+        terminalTitle.textContent = 'sh@slowhell.xyz:~';
+        
+        minimizedTerminal.addEventListener('mouseover', () => {
+          terminalTitle.style.opacity = '1';
+        });
+        
+        minimizedTerminal.addEventListener('mouseout', () => {
+          terminalTitle.style.opacity = '0';
+        });
+        
+        minimizedTerminal.appendChild(terminalTitle);
+        
+        // Restore terminal on click
+        minimizedTerminal.addEventListener('click', () => {
+          window.location.href = 'terminal.html?restore=true';
+        });
+        
+        document.body.appendChild(minimizedTerminal);
+        
+        // Add glitch effect occasionally
+        setInterval(() => {
+          if (Math.random() < 0.2) {
+            minimizedTerminal.style.transform = 'scale(1.1)';
+            minimizedTerminal.style.boxShadow = '0 0 15px rgba(255, 0, 255, 0.5)';
+            setTimeout(() => {
+              minimizedTerminal.style.transform = 'scale(1)';
+              minimizedTerminal.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.5)';
+            }, 200);
+          }
+        }, 5000);
+      }
+      
+      // Style for minimized terminal
+      const style = document.createElement('style');
+      style.textContent = `
+        .minimized-terminal {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          width: 60px;
+          height: 40px;
+          background-color: #181818;
+          border: 1px solid #333;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 1000;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          transition: all 0.3s ease;
+          opacity: 0.8;
+        }
+        .minimized-terminal:hover {
+          transform: scale(1.05);
+          opacity: 1;
+          box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
+        }
+        .minimized-terminal img {
+          width: 24px;
+          height: 24px;
+          opacity: 0.8;
+        }
+      `;
+      document.head.appendChild(style);
       
       // Track occupied horizontal positions
       const columnWidth = 10; // Width of columns in percentage
