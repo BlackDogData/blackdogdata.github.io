@@ -8,10 +8,79 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Amiri&family=Noto+Sans+Devanagari:wght@300;400&display=swap" rel="stylesheet">
   <script src="void-whispers.js"></script>
   <style>
+    /* Rain effect styles - must come first */
+    .rain-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+      background: transparent;
+    }
+
+    .rain-text {
+      position: absolute;
+      color: rgba(240, 240, 240, 0.7);
+      top: -60px;
+      user-select: none;
+      font-weight: 300;
+      animation-name: rain-fall;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      font-size: 1.4em;
+      pointer-events: none;
+    }
+
+    .rain-text.blood {
+      color: rgba(220, 20, 20, 0.85);
+      text-shadow: 0 0 8px rgba(220, 20, 20, 0.6);
+    }
+
+    .english {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .arabic {
+      font-family: 'Amiri', serif;
+    }
+
+    .sanskrit {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+
+    @keyframes rain-fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    /* Terminal body needs a transparent background */
+    .terminal-body {
+      background: rgba(13, 13, 13, 0.5) !important;
+    }
+
     /* Terminal-specific styles */
+    .terminal-header {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(24, 24, 24, 0.55);
+      backdrop-filter: blur(1px);
+    }
+
+    .terminal {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(1px);
+    }
     .blink {
       animation: blink 1s infinite;
     }
@@ -121,6 +190,9 @@
   </style>
 </head>
 <body class="terminal-body">
+  <!-- Rain container must be first -->
+  <div class="rain-container" id="rainContainer"></div>
+
   <div class="terminal-header">
     <div class="terminal-controls">
       <div class="terminal-control close" id="closeButton"></div>
@@ -157,6 +229,77 @@ Example usage: 'entropy this is some text to analyze'
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Rain effect initialization - MUST COME FIRST
+      const container = document.getElementById('rainContainer');
+      const phrases = [
+        { text: 'slow hell', language: 'english' },
+        { text: 'الجحيم البطيء', language: 'arabic' },
+        { text: 'धीमा नरक', language: 'sanskrit' }
+      ];
+      
+      // Track occupied horizontal positions
+      const columnWidth = 10; // Width of columns in percentage
+      const columns = Math.floor(100 / columnWidth);
+      const columnUsage = new Array(columns).fill(0); // Tracks when a column was last used
+      
+      function getAvailableColumn() {
+        let minUsage = Infinity;
+        let selectedColumn = 0;
+        
+        for (let i = 0; i < columns; i++) {
+          if (columnUsage[i] < minUsage) {
+            minUsage = columnUsage[i];
+            selectedColumn = i;
+          }
+        }
+        
+        columnUsage[selectedColumn] = Date.now();
+        return selectedColumn;
+      }
+      
+      function createRainText() {
+        const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+        const text = document.createElement('span');
+        text.textContent = phrase.text;
+        text.classList.add('rain-text', phrase.language);
+        
+        const column = getAvailableColumn();
+        const basePosition = column * columnWidth;
+        const offset = (Math.random() * columnWidth * 0.8);
+        const left = basePosition + offset;
+        
+        const duration = 7 + Math.random() * 8;
+        const size = 1.2 + Math.random() * 1.5;
+        const opacity = 0.2 + Math.random() * 0.2;
+        
+        if (Math.random() < 0.25) {
+          text.classList.add('blood');
+        }
+        
+        text.style.left = `${left}%`;
+        text.style.animationDuration = `${duration}s`;
+        text.style.fontSize = `${size}em`;
+        text.style.opacity = opacity;
+        
+        container.appendChild(text);
+        
+        setTimeout(() => {
+          text.remove();
+        }, duration * 1000);
+      }
+      
+      // Initial batch
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          createRainText();
+        }, i * 250);
+      }
+      
+      // Continue creating rain
+      setInterval(() => {
+        createRainText();
+      }, 180);
+
       const terminal = document.getElementById('terminal');
       const output = document.getElementById('terminalOutput');
       const input = document.getElementById('terminalInput');
