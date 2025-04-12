@@ -1,10 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>slowhell.xyz</title>
+  <title>slowhell.xyz | Landing Page</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +15,7 @@
       padding: 0;
       min-height: 100vh;
       background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-      color: #e0e0e0;
+      color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
       display: flex;
       flex-direction: column;
@@ -31,32 +30,24 @@
       position: relative;
     }
 
-    .logo {
-      margin-bottom: 2rem;
-      position: relative;
-      display: inline-block;
+    .corner-sigil {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      z-index: 100;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
     }
 
-    .logo img {
-      width: 80px;
-      height: 80px;
-      transition: transform 0.3s ease;
+    .corner-sigil:hover {
+      opacity: 1;
     }
 
-    .logo:hover img {
-      transform: scale(1.1);
-    }
-
-    .logo::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, transparent 70%);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
+    .corner-sigil svg {
+      width: 100%;
+      height: 100%;
     }
 
     h1 {
@@ -158,27 +149,25 @@
 </head>
 <body>
   <div class="content">
-    <body>
-      <div class="sigil-background">
-        <svg width="160" height="180" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <style>
-            .glow { fill: none; stroke: #000000; stroke-width: 2; filter: drop-shadow(0 0 4px #ff0000); animation: pulse 3s infinite ease-in-out; }
-            .dot { fill: #000000; filter: drop-shadow(0 0 3px #ff0000); animation: pulse 3s infinite ease-in-out; }
-            .text { font-family: 'Courier New', monospace; font-size: 8px; fill: #ff0000; text-shadow: 0 0 3px #ffffff; animation: pulse 3s infinite ease-in-out; }
-            @keyframes pulse {
-              0%, 100% { opacity: 0.9; }
-              50% { opacity: 0.3; }
-            }
-          </style>
-          <circle class="glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
-          <polygon class="glow" points="50,20 70,40 50,60 30,40" />
-          <circle class="dot" cx="50" cy="40" r="5" />
-          <line class="glow" x1="30" y1="20" x2="70" y2="80" />
-          <line class="glow" x1="70" y1="20" x2="30" y2="80" />
-          <text x="40.5" y="95" class="text">⠋⠙⠝</text>
-        </svg>
-      </div>
-    </body>
+    <div class="sigil-background">
+      <svg width="160" height="180" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .glow { fill: none; stroke: #000000; stroke-width: 2; filter: drop-shadow(0 0 4px #ff0000); animation: pulse 4s infinite ease-in-out; }
+          .dot { fill: #000000; filter: drop-shadow(0 0 3px #ff0000); animation: pulse 4s infinite ease-in-out; }
+          .text { font-family: 'Courier New', monospace; font-size: 8px; fill: #ff0000; text-shadow: 0 0 3px #ffffff; animation: pulse 4s infinite ease-in-out; }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.1; }
+          }
+        </style>
+        <circle class="glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
+        <polygon class="glow" points="50,20 70,40 50,60 30,40" />
+        <circle class="dot" cx="50" cy="40" r="5" />
+        <line class="glow" x1="30" y1="20" x2="70" y2="80" />
+        <line class="glow" x1="70" y1="20" x2="30" y2="80" />
+        <text x="40.5" y="95" class="text">⠋⠙⠝</text>
+      </svg>
+    </div>
     
     <h1>slowhell.xyz</h1>
     <div class="subtitle">A digital sanctuary for code and consciousness</div>
@@ -199,8 +188,30 @@
     </div>
   </div>
 
+  <div class="corner-sigil">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        .corner-glow { fill: none; stroke: #000000; stroke-width: 2; filter: drop-shadow(0 0 4px #ff0000); animation: breathe 4s infinite ease-in-out; }
+        .corner-dot { fill: #000000; filter: drop-shadow(0 0 3px #ff0000); animation: breathe 4s infinite ease-in-out; }
+        .corner-text { font-family: 'Courier New', monospace; font-size: 8px; fill: #ff0000; text-shadow: 0 0 3px #ffffff; animation: breathe 4s infinite ease-in-out; }
+        @keyframes breathe {
+          0%, 100% { opacity: 0.8; transform: scale(1); }
+          50% { opacity: 0.0; transform: scale(0.95); }
+        }
+      </style>
+      <circle class="corner-glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
+      <polygon class="corner-glow" points="50,20 70,40 50,60 30,40" />
+      <circle class="corner-dot" cx="50" cy="40" r="5" />
+      <line class="corner-glow" x1="30" y1="20" x2="70" y2="80" />
+      <line class="corner-glow" x1="70" y1="20" x2="30" y2="80" />
+      <text x="40.5" y="95" class="corner-text">⠋⠙⠝</text>
+    </svg>
+  </div>
+
   <footer>
-    © 1997 slowhell.xyz | AI Experimentation & Consciousness Research
+    © 2024–2025 slowhell.xyz. All rights reserved.
+
+
   </footer>
 
   <script>
