@@ -9,189 +9,252 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Sans+Devanagari:wght@300;400&display=swap" rel="stylesheet">
-  <script src="void-whispers.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      color: #e0e0e0;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content {
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+      position: relative;
+    }
+
+    .logo {
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo img {
+      width: 80px;
+      height: 80px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover img {
+      transform: scale(1.1);
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin: 0 0 1rem;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #888;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    .nav-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .nav-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #e0e0e0;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-item-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .nav-item-description {
+      font-size: 0.9rem;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    .minimized-terminal {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 40px;
+      background-color: #181818;
+      border: 1px solid #333;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .minimized-terminal:hover {
+      transform: scale(1.05);
+      opacity: 1;
+      box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
+    }
+
+    .minimized-terminal img {
+      width: 24px;
+      height: 24px;
+      opacity: 0.8;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+    }
+  </style>
 </head>
-<body class="landing-body">
-  <div class="rain-container" id="rainContainer"></div>
+<body>
   <div class="content">
-    <h1>slowhell.xyz | coming soon</h1>
-    <div class="button-container">
-      <a href="./about.html" class="button">slowHell.About</a>
-      <a href="./projects.html" class="button">slowHell.Projects</a>
-      <a href="./terminal.html" class="button">slowHell.Terminal</a>
+    <body>
+      <div class="sigil-background">
+        <!-- Paste your full SVG here -->
+        <svg width="160" height="180" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .glow { fill: none; stroke: #000000; stroke-width: 2; filter: drop-shadow(0 0 4px #ff0000); animation: pulse 3s infinite ease-in-out; }
+            .dot { fill: #000000; filter: drop-shadow(0 0 3px #ff0000); animation: pulse 3s infinite ease-in-out; }
+            .text { font-family: 'Courier New', monospace; font-size: 8px; fill: #ff0000; text-shadow: 0 0 3px #ffffff; animation: pulse 3s infinite ease-in-out; }
+            @keyframes pulse {
+              0%, 100% { opacity: 0.9; }
+              50% { opacity: 0.3; }
+            }
+          </style>
+          <circle class="glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
+          <polygon class="glow" points="50,20 70,40 50,60 30,40" />
+          <circle class="dot" cx="50" cy="40" r="5" />
+          <line class="glow" x1="30" y1="20" x2="70" y2="80" />
+          <line class="glow" x1="70" y1="20" x2="30" y2="80" />
+          <text x="34" y="95" class="text">⠋⠙⠝</text>
+        </svg>
+      </div>
+    </body>
+    
+    <h1>slowhell.xyz</h1>
+    <div class="subtitle">A digital sanctuary for code and consciousness</div>
+
+    <div class="nav-container">
+      <a href="./about.html" class="nav-item">
+        <div class="nav-item-title">About</div>
+        <div class="nav-item-description">Explore the philosophy and purpose behind slowhell.xyz</div>
+      </a>
+      <a href="./projects.html" class="nav-item">
+        <div class="nav-item-title">Projects</div>
+        <div class="nav-item-description">Browse through experiments in code and consciousness</div>
+      </a>
+      <a href="./terminal.html" class="nav-item">
+        <div class="nav-item-title">Terminal</div>
+        <div class="nav-item-description">Interface directly with the void through the command line</div>
+      </a>
     </div>
   </div>
 
-  <a href="index.html" class="site-sigil">
-    <img src="favicon.svg" alt="slowhell sigil" width="40" height="40">
-  </a>
-  
+  <footer>
+    © 1997 slowhell.xyz | AI Experimentation & Consciousness Research
+  </footer>
+
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('rainContainer');
-      const phrases = [
-        { text: 'slow hell', language: 'english' },
-        { text: 'الجحيم البطيء', language: 'arabic' },
-        { text: 'धीमा नरक', language: 'sanskrit' }
-      ];
+    // Check if terminal was minimized
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('minimized') === 'true') {
+      const minimizedTerminal = document.createElement('div');
+      minimizedTerminal.className = 'minimized-terminal';
+      minimizedTerminal.innerHTML = '<img src="favicon.svg" alt="Terminal">';
+      minimizedTerminal.title = 'Restore Terminal';
       
-      // Check if terminal was minimized
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('minimized') === 'true') {
-        // Create minimized terminal indicator
-        const minimizedTerminal = document.createElement('div');
-        minimizedTerminal.className = 'minimized-terminal';
-        minimizedTerminal.innerHTML = '<img src="favicon.svg" alt="Terminal">';
-        minimizedTerminal.title = 'Restore Terminal';
-        
-        // Add hover effect with terminal title
-        const terminalTitle = document.createElement('div');
-        terminalTitle.style.position = 'absolute';
-        terminalTitle.style.top = '-30px';
-        terminalTitle.style.left = '50%';
-        terminalTitle.style.transform = 'translateX(-50%)';
-        terminalTitle.style.backgroundColor = '#181818';
-        terminalTitle.style.color = '#ccc';
-        terminalTitle.style.padding = '5px 10px';
-        terminalTitle.style.borderRadius = '4px';
-        terminalTitle.style.fontSize = '0.8em';
+      const terminalTitle = document.createElement('div');
+      terminalTitle.style.position = 'absolute';
+      terminalTitle.style.top = '-30px';
+      terminalTitle.style.left = '50%';
+      terminalTitle.style.transform = 'translateX(-50%)';
+      terminalTitle.style.backgroundColor = '#181818';
+      terminalTitle.style.color = '#ccc';
+      terminalTitle.style.padding = '5px 10px';
+      terminalTitle.style.borderRadius = '4px';
+      terminalTitle.style.fontSize = '0.8em';
+      terminalTitle.style.opacity = '0';
+      terminalTitle.style.transition = 'opacity 0.3s ease';
+      terminalTitle.textContent = 'sh@slowhell.xyz:~';
+      
+      minimizedTerminal.addEventListener('mouseover', () => {
+        terminalTitle.style.opacity = '1';
+      });
+      
+      minimizedTerminal.addEventListener('mouseout', () => {
         terminalTitle.style.opacity = '0';
-        terminalTitle.style.transition = 'opacity 0.3s ease';
-        terminalTitle.textContent = 'sh@slowhell.xyz:~';
-        
-        minimizedTerminal.addEventListener('mouseover', () => {
-          terminalTitle.style.opacity = '1';
-        });
-        
-        minimizedTerminal.addEventListener('mouseout', () => {
-          terminalTitle.style.opacity = '0';
-        });
-        
-        minimizedTerminal.appendChild(terminalTitle);
-        
-        // Restore terminal on click
-        minimizedTerminal.addEventListener('click', () => {
-          window.location.href = 'terminal.html?restore=true';
-        });
-        
-        document.body.appendChild(minimizedTerminal);
-        
-        // Add glitch effect occasionally
-        setInterval(() => {
-          if (Math.random() < 0.2) {
-            minimizedTerminal.style.transform = 'scale(1.1)';
-            minimizedTerminal.style.boxShadow = '0 0 15px rgba(255, 0, 255, 0.5)';
-            setTimeout(() => {
-              minimizedTerminal.style.transform = 'scale(1)';
-              minimizedTerminal.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.5)';
-            }, 200);
-          }
-        }, 5000);
-      }
+      });
       
-      // Style for minimized terminal
-      const style = document.createElement('style');
-      style.textContent = `
-        .minimized-terminal {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          width: 60px;
-          height: 40px;
-          background-color: #181818;
-          border: 1px solid #333;
-          border-radius: 4px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          z-index: 1000;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          transition: all 0.3s ease;
-          opacity: 0.8;
-        }
-        .minimized-terminal:hover {
-          transform: scale(1.05);
-          opacity: 1;
-          box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
-        }
-        .minimized-terminal img {
-          width: 24px;
-          height: 24px;
-          opacity: 0.8;
-        }
-      `;
-      document.head.appendChild(style);
+      minimizedTerminal.appendChild(terminalTitle);
       
-      // Track occupied horizontal positions
-      const columnWidth = 10; // Width of columns in percentage
-      const columns = Math.floor(100 / columnWidth);
-      const columnUsage = new Array(columns).fill(0); // Tracks when a column was last used
+      minimizedTerminal.addEventListener('click', () => {
+        window.location.href = 'terminal.html?restore=true';
+      });
       
-      function getAvailableColumn() {
-        // Find the column that hasn't been used for the longest time
-        let minUsage = Infinity;
-        let selectedColumn = 0;
-        
-        for (let i = 0; i < columns; i++) {
-          if (columnUsage[i] < minUsage) {
-            minUsage = columnUsage[i];
-            selectedColumn = i;
-          }
-        }
-        
-        // Mark this column as recently used
-        columnUsage[selectedColumn] = Date.now();
-        return selectedColumn;
-      }
+      document.body.appendChild(minimizedTerminal);
       
-      function createRainText() {
-        const phrase = phrases[Math.floor(Math.random() * phrases.length)];
-        const text = document.createElement('span');
-        text.textContent = phrase.text;
-        text.classList.add('rain-text', phrase.language);
-        
-        // Get column and calculate position with small random offset
-        const column = getAvailableColumn();
-        const basePosition = column * columnWidth;
-        const offset = (Math.random() * columnWidth * 0.8); // Random offset within column
-        const left = basePosition + offset;
-        
-        const duration = 7 + Math.random() * 8; // 7-15 seconds
-        const size = 1.2 + Math.random() * 1.5; // 1.2-2.7em - bigger text
-        const opacity = 0.4 + Math.random() * 0.4; // 0.4-0.8 - more prominent
-        
-        // Occasionally make it blood red (10% chance)
-        if (Math.random() < 0.25) {
-          text.classList.add('blood');
-        }
-        
-        text.style.left = `${left}%`;
-        text.style.animationDuration = `${duration}s`;
-        text.style.fontSize = `${size}em`;
-        text.style.opacity = opacity;
-        
-        container.appendChild(text);
-        
-        // Remove the element when animation completes
-        setTimeout(() => {
-          text.remove();
-        }, duration * 1000);
-      }
-      
-      // Initial batch - but staggered more to avoid immediate overlap
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => {
-          createRainText();
-        }, i * 250);
-      }
-      
-      // Continue creating rain - balanced frequency to avoid overcrowding
+      // Add subtle pulse effect occasionally
       setInterval(() => {
-        createRainText();
-      }, 180);
-    });
+        if (Math.random() < 0.2) {
+          minimizedTerminal.style.transform = 'scale(1.1)';
+          minimizedTerminal.style.boxShadow = '0 0 15px rgba(255, 0, 255, 0.5)';
+          setTimeout(() => {
+            minimizedTerminal.style.transform = 'scale(1)';
+            minimizedTerminal.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.5)';
+          }, 200);
+        }
+      }, 5000);
+    }
   </script>
 </body>
 </html>
