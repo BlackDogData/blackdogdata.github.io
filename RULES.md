@@ -2,7 +2,7 @@
 
 ## ∆∇✵ ENTROPY MANIFESTO ✵∇∆
 
-slowhell.xyz exists at the intersection of order and chaos, where digital entropy meets structured thought. These rules are not constraints, but rather the boundaries within which our entropy can flow.
+slowhell.xyz exists at the intersection of consciousness and code, where entropy meets structured thought. These rules are not constraints, but rather the boundaries within which our entropy can flow.
 
 ## 1. TERMINAL PROTOCOLS
 

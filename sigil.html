@@ -2,24 +2,26 @@
     <style>
       .glow {
         fill: none;
-        stroke: #00ffcc;
+        stroke: #000000;
         stroke-width: 2;
-        filter: drop-shadow(0 0 4px #00ffcc);
+        filter: drop-shadow(0 0 4px #ff0000);
         animation: pulse 4s infinite ease-in-out;
       }
       .dot {
-        fill: #00ffcc;
-        filter: drop-shadow(0 0 3px #00ffcc);
+        fill: #000000;
+        filter: drop-shadow(0 0 3px #ff0000);
+        animation: pulse 4s infinite ease-in-out;
       }
       .text {
         font-family: 'Courier New', monospace;
         font-size: 8px;
-        fill: #00ffcc;
-        text-shadow: 0 0 3px #00ffcc;
+        fill: #000000;
+        text-shadow: 0 0 3px #ff0000;
+        animation: pulse 4s infinite ease-in-out;
       }
       @keyframes pulse {
-        0%, 100% { opacity: 0.9; }
-        50% { opacity: 0.3; }
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 0.0; }
       }
     </style>
   
