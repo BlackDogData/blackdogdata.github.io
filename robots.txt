@@ -1,0 +1,21 @@
+# slowhell.xyz robots.txt
+# Allow all web crawlers
+User-agent: *
+Allow: /
+Allow: /about.html
+Allow: /projects.html
+Allow: /terminal.html
+Allow: /404.html
+Allow: /cli.html
+Allow: /sigil.html
+
+# Explicitly disallow any potential future admin or private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.git/
+
+# Sitemap location
+Sitemap: https://slowhell.xyz/sitemap.xml
+
+# Crawl-delay suggestion for rate limiting
+Crawl-delay: 10 

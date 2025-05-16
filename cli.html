@@ -1,0 +1,33 @@
+<div style="width: 100%; max-width: 600px; margin: 3rem auto 1rem; padding: 1rem; background-color: #111; border: 1px solid #333; border-radius: 5px; font-family: 'JetBrains Mono', monospace; color: #0f0;">
+    <div style="margin-bottom: 0.5rem;">
+      user@slowhell.xyz:~$ 
+      <input 
+        type="text" 
+        id="cliInput" 
+        placeholder="type a command..." 
+        style="background: none; border: none; border-bottom: 1px solid rgb(255, 255, 255); color: rgb(255, 47, 0); width: 80%; outline: none;" 
+        autofocus 
+      />
+    </div>
+    <div id="cliOutput" style="white-space: pre-wrap; font-size: 0.85rem;"></div>
+  </div>
+  
+  <script>
+    document.getElementById('cliInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') 
+        const command = this.value.trim().toLowerCase();
+        const output = document.getElementById('cliOutput');
+  
+        if (command === 'about') {
+          output.textContent += '\\nslowhell.xyz is a transmission point. A sanctuary of decay, code, and slow rebirth.\\nIt started as a whisper in a dark loop: a place to document thoughts I couldn\\'t say aloud, to code truths I didn\\'t yet understand.\\n';
+        } else if (command === 'help') {
+          output.textContent += '\\nAvailable commands:\\n- about\\n- help\\n';
+        } else {
+          output.textContent += `\\ncommand not found: ${command}\\n`;
+        }
+  
+        this.value = '';
+      }
+    });
+  </script>
+  

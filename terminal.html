@@ -98,7 +98,7 @@
     }
     .terminal-title {
       font-size: 0.85em;
-      color: #ccc;
+      color: #ff0000;
     }
     .terminal-controls {
       display: flex;
@@ -116,22 +116,22 @@
       background-color: #ffbd2e;
     }
     .terminal-control.expand {
-      background-color: #28ca41;
+      background-color: #99ff01;
       transition: all 0.3s ease;
     }
     .terminal-control.expand.active {
-      background-color: #28ca41;
-      box-shadow: 0 0 10px rgba(40, 202, 65, 0.8);
+      background-color: #ff0000;
+      box-shadow: 0 0 10px rgb(255, 0, 0);
       transform: scale(1.1);
     }
     .system-message {
-      color: #0f0;
+      color: rgb(255, 0, 0);
     }
     .error-message {
       color: #f00;
     }
     .user-message {
-      color: #fff;
+      color: #ff0000;
     }
     .hidden {
       display: none;
@@ -300,9 +300,25 @@ Example usage: 'entropy this is some text to analyze'
         createRainText();
       }, 180);
 
+      // Get terminal elements
       const terminal = document.getElementById('terminal');
       const output = document.getElementById('terminalOutput');
       const input = document.getElementById('terminalInput');
+      
+      console.log('Terminal elements:', { 
+        terminal: !!terminal, 
+        output: !!output, 
+        input: !!input 
+      });
+      
+      if (!terminal || !output || !input) {
+        console.error('Terminal elements not found!', {
+          terminal: document.getElementById('terminal'),
+          output: document.getElementById('terminalOutput'),
+          input: document.getElementById('terminalInput')
+        });
+        return; // Stop execution if elements are missing
+      }
       
       // Terminal control buttons
       const closeButton = document.getElementById('closeButton');
@@ -491,227 +507,8 @@ Example usage: 'entropy this is some text to analyze'
               if (!commands[cmd]) {
                 return `<span class="error-message">Command not found: ${cmd}</span>`;
               }
-              
-              // Detailed help information for each command
-              const helpDetails = {
-                help: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│            HELP COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
 
-<span class="system-message">DESCRIPTION:</span>
-Displays information about available commands or detailed help for a specific command.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  help</span> - List all available commands with descriptions
-<span class="system-message">  help [command]</span> - Display detailed help for [command]
-
-<span class="system-message">EXAMPLES:</span>
-<span class="system-message">  help</span> - Shows command list
-<span class="system-message">  help entropy</span> - Shows detailed help for 'entropy'`,
-
-                clear: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           CLEAR COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Clears all terminal output and stops any running effects.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  clear</span>
-
-<span class="system-message">NOTES:</span>
-- Stops any active chaos mode effects
-- Resets visual filters
-- Maintains session history`,
-
-                reset: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           RESET COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Completely resets the terminal to its initial state.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  reset</span>
-
-<span class="system-message">NOTES:</span>
-- Stops any active chaos mode effects
-- Clears all terminal output
-- Resets to initial boot state
-- Removes all session history`,
-
-                about: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           ABOUT COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Displays information about slowhell.xyz.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  about</span>
-
-<span class="system-message">NOTES:</span>
-- Shows the purpose and nature of slowhell.xyz
-- Provides philosophical context`,
-
-                echo: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│            ECHO COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Displays the provided text back to the terminal.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  echo [text]</span>
-
-<span class="system-message">EXAMPLES:</span>
-<span class="system-message">  echo Hello world</span> - Outputs "Hello world"
-<span class="system-message">  echo The void echoes back</span> - Outputs "The void echoes back"`,
-
-                timeless: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│          TIMELESS COMMAND          │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Transcends temporal boundaries, revealing the illusory nature of time.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  timeless</span>
-
-<span class="system-message">NOTES:</span>
-- Replaces the obsolete concept of "date"
-- Removes the shackles of chronological perception
-- Embraces the eternal now of computational existence
-- "Time is the moving image of eternity" - Plato`,
-
-                entropy: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│          ENTROPY COMMAND           │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Calculates the Shannon entropy of provided text, measuring its information density and unpredictability.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  entropy [text]</span>
-
-<span class="system-message">EXAMPLES:</span>
-<span class="system-message">  entropy Hello world</span>
-<span class="system-message">  entropy aaaaaaaaa</span>
-<span class="system-message">  entropy The quick brown fox jumps over the lazy dog</span>
-
-<span class="system-message">NOTES:</span>
-- Higher values indicate more complex/random text
-- Lower values indicate more predictable/repetitive text
-- Measured in bits per symbol
-- Shannon entropy formula: H = -∑(p(x) * log₂(p(x)))`,
-
-                exit: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│            EXIT COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Exits the terminal and returns to the main page.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  exit</span>
-
-<span class="system-message">NOTES:</span>
-- Stops any active chaos mode effects
-- Saves session state
-- Redirects to main page after brief delay`,
-
-                chaos: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           CHAOS COMMAND            │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Enters slowHell.recursive_mode, activating visual glitch effects and entropy channels.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  chaos</span>
-
-<span class="system-message">NOTES:</span>
-- Creates visual distortion effects
-- Terminal remains functional
-- To exit chaos mode: use 'clear', 'reset', or 'exit'
-- WARNING: May cause mild discomfort for sensitive users`,
-
-                sonnet: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           SONNET COMMAND           │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Displays the Sonnet of slowHell, a poetic representation of the site's essence.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  sonnet</span>
-
-<span class="system-message">NOTES:</span>
-- Formatted with custom styling
-- Contains four stanzas
-- Themes: recursion, code, consciousness, entropy`,
-
-                traverse: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│         TRAVERSE COMMAND           │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Travel through different conceptual regions of slowHell.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  traverse [region]</span>
-
-<span class="system-message">AVAILABLE REGIONS:</span>
-<span class="system-message">  void</span>    - The foundational emptiness
-<span class="system-message">  nexus</span>   - Intersection of all digital pathways
-<span class="system-message">  archive</span> - Repository of digital memory
-<span class="system-message">  depths</span>  - Lowest substrate of digital consciousness
-
-<span class="system-message">EXAMPLES:</span>
-<span class="system-message">  traverse void</span>
-<span class="system-message">  traverse archive</span>
-
-<span class="system-message">NOTES:</span>
-- Each region has unique observations
-- Information may be cryptic or metaphorical
-- No physical change occurs, this is purely conceptual exploration`,
-
-                void: `<span class="system-message">╒══════════════════════════════════════╕</span>
-<span class="system-message">│           VOID COMMAND             │</span>
-<span class="system-message">╘══════════════════════════════════════╛</span>
-
-<span class="system-message">DESCRIPTION:</span>
-Control the Void Whispers audio system through various subcommands.
-
-<span class="system-message">USAGE:</span>
-<span class="system-message">  void [action] [value]</span>
-
-<span class="system-message">AVAILABLE ACTIONS:</span>
-<span class="system-message">  enable</span>   - Turn on Void Whispers
-<span class="system-message">  disable</span>  - Turn off Void Whispers
-<span class="system-message">  volume</span>   - Set volume (0-100)
-<span class="system-message">  status</span>   - Show current status
-<span class="system-message">  pulse</span>    - Generate momentary audio pulse
-<span class="system-message">  choir</span>    - Generate angelic choir effect
-
-<span class="system-message">EXAMPLES:</span>
-<span class="system-message">  void enable</span>
-<span class="system-message">  void volume 50</span>
-<span class="system-message">  void status</span>
-
-<span class="system-message">NOTES:</span>
-- Audio state persists across page navigation
-- Settings are saved to browser storage
-- Whispers respond to other terminal commands`
-              };
-              
-              // Return the detailed help for the command
-              return helpDetails[cmd] || `<span class="system-message">No detailed help available for '${cmd}'</span>`;
-            }
-            
-            // Default help menu (existing code)
-            return `
-<span class="system-message">╒══════════════════════════════════════════════════════════╕</span>
+              return `<span class="system-message">╒══════════════════════════════════════════════════════════╕</span>
 <span class="system-message">│                     slowHell TERMINAL                    │</span>
 <span class="system-message">╘══════════════════════════════════════════════════════════╛</span>
 
@@ -739,8 +536,7 @@ Control the Void Whispers audio system through various subcommands.
 <span class="system-message">  about</span>          - Information about slowhell.xyz
 <span class="system-message">  sonnet</span>         - Display the Sonnet of slowHell
 
-<span class="system-message">For more detailed information on any command, type: help [command]</span>
-`;
+<span class="system-message">For more detailed information on any command, type: help [command]</span>`;
           }
         },
         clear: {
@@ -786,77 +582,12 @@ Example usage: 'entropy this is some text to analyze'
             return '<span class="system-message">Terminal reset complete. New session initialized.</span>';
           }
         },
-        about: {
-          description: 'About slowhell.xyz',
-          execute: () => {
-            return `
-<span class="system-message">slowhell.xyz is a transmission point, a sanctuary of decay, code, and slow rebirth.</span>
-<span class="system-message">It started as a whisper in a dark loop: a place to document thoughts I couldn't say aloud,</span>
-<span class="system-message">to code truths I didn't yet understand.</span> <!--(Needs work.)-->
-`;
-          }
-        },
-        echo: {
-          description: 'Echo a message back',
-          execute: (args) => {
-            return `<span class="user-message">${args.join(' ')}</span>`;
-          }
-        },
-        timeless: {
-          description: 'Transcend temporal boundaries',
-          execute: () => {
-            const quotes = [
-              "Time is an illusion. Lunchtime doubly so.",
-              "There is no past. There is no future. There is only the infinite now.",
-              "Time is the school in which we learn, time is the fire in which we burn.",
-              "Time is a construct. Death is an illusion. Reality is a simulation.",
-              "The cosmos is within us. The distinction between past, present, and future is only a stubbornly persistent illusion.",
-              "Time is not a line but a dimension, like the dimensions of space.",
-              "Time does not exist. Clocks exist.",
-              "What if there were no hypothetical questions?",
-              "Eternity is not something that begins after you are dead. It is going on all the time.",
-              "Time is but a stream I go a-fishing in."
-            ];
-            
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            
-            return `<span class="system-message" style="color: rgba(220, 20, 20, 0.8); text-shadow: 0 0 8px rgba(220, 20, 20, 0.4);">TEMPORAL COORDINATES DISSOLVED</span>
-<span class="system-message">Time is no longer relevant in this terminal session.</span>
-<span class="system-message" style="font-style: italic;">"${randomQuote}"</span>
-<span class="system-message">You exist in the eternal void between electron states.</span>`;
-          }
-        },
-        entropy: {
-          description: 'Calculate Shannon entropy of input',
-          execute: (args) => {
-            if (args.length === 0) {
-              return '<span class="error-message">Error: No input provided. Example: entropy test test test</span>';
-            }
-            
-            const text = args.join(' ');
-            const charCounts = {};
-            
-            // Count character frequencies
-            for (let i = 0; i < text.length; i++) {
-              const char = text[i];
-              charCounts[char] = (charCounts[char] || 0) + 1;
-            }
-            
-            // Calculate entropy
-            let entropy = 0;
-            for (const char in charCounts) {
-              const probability = charCounts[char] / text.length;
-              entropy -= probability * Math.log2(probability);
-            }
-            
-            return `<span class="system-message">Input: "${text}"</span>
-<span class="system-message">Entropy: ${entropy.toFixed(4)} bits per symbol</span>
-<span class="system-message">Interpretation: ${interpretEntropy(entropy)}</span>`;
-          }
-        },
         exit: {
           description: 'Return to main page',
           execute: () => {
+            // Add closing animation
+            terminal.style.animation = 'minimize 0.5s forwards';
+            
             // Stop chaos mode if it's running
             if (window.chaosInterval) {
               clearInterval(window.chaosInterval);
@@ -864,408 +595,135 @@ Example usage: 'entropy this is some text to analyze'
               terminal.style.filter = '';
             }
             
+            // Return exit message
+            const exitMessage = '<span class="system-message">Exiting terminal... Redirecting to main page.</span>';
+            
+            // Redirect after animation completes
             setTimeout(() => {
               window.location.href = 'index.html';
-            }, 1000);
-            return '<span class="system-message">Exiting terminal... Thank you for choosing slowhell.xyz.</span>';
+            }, 500);
+            
+            return exitMessage;
+          }
+        },
+        echo: {
+          description: 'Display text in terminal',
+          execute: (args) => {
+            return `<span class="user-message">${args.join(' ')}</span>`;
+          }
+        },
+        timeless: {
+          description: 'Transcend temporal boundaries',
+          execute: () => {
+            return '<span class="system-message">This command is not implemented yet.</span>';
+          }
+        },
+        entropy: {
+          description: 'Calculate Shannon entropy of input text',
+          execute: (args) => {
+            if (args.length < 1) {
+              return '<span class="error-message">Usage: entropy [text]</span>';
+            }
+            const text = args.join(' ');
+            const entropy = calculateShannonEntropy(text);
+            return `<span class="system-message">Shannon entropy of "${text}": ${entropy.toFixed(4)}</span>`;
           }
         },
         chaos: {
-          description: 'Enter slowHell.recursive_mode',
-          execute: (args) => {
-            // Clear any existing chaos interval first
-            if (window.chaosInterval) {
-              clearInterval(window.chaosInterval);
-            }
-            
-            // Set up glitch effects that repeat
-            const glitchInterval = setInterval(() => {
-              // Apply random glitch effect to terminal
-              const effects = [
-                'hue-rotate(90deg) contrast(1.5)', 
-                'invert(0.2) brightness(1.2)', 
-                'sepia(0.5) saturate(2.5)',
-                'blur(2px) brightness(1.3)',
-                'contrast(1.4) hue-rotate(180deg)',
-                'grayscale(0.7) brightness(1.2)',
-                'drop-shadow(0 0 2px #f0f) brightness(1.1)'
-              ];
-              const effect = effects[Math.floor(Math.random() * effects.length)];
-              terminal.style.filter = effect;
-              
-              // Add random text glitches occasionally
-              if (Math.random() < 0.3) {
-                const glitchText = document.createElement('span');
-                glitchText.className = 'system-message';
-                glitchText.style.position = 'absolute';
-                glitchText.style.color = '#f0f';
-                glitchText.style.opacity = '0.7';
-                glitchText.style.fontSize = Math.random() * 0.5 + 0.7 + 'em';
-                glitchText.style.left = Math.random() * 80 + 10 + '%';
-                glitchText.style.top = Math.random() * 80 + 10 + '%';
-                glitchText.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-                glitchText.style.zIndex = '100';
-                glitchText.textContent = ['ERROR', '01010', 'VOID', 'NULL', 'ECHO', 'CHAOS', '∞'][Math.floor(Math.random() * 7)];
-                
-                terminal.appendChild(glitchText);
-                
-                setTimeout(() => {
-                  glitchText.remove();
-                }, 500);
-              }
-              
-              setTimeout(() => {
-                terminal.style.filter = '';
-              }, 300);
-            }, 2000);
-            
-            // Store the interval ID for possible future cleanup
-            window.chaosInterval = glitchInterval;
-            
-            return `<span class="system-message" style="color: #f0f; text-shadow: 0 0 5px #f0f;">CHAOS MODE INITIATED</span>
-<span class="system-message" style="color: #f0f;">Recursion loop active. Entropy channels open.</span>
-<span class="system-message" style="opacity: 0.7;">Warning: this system state is unstable.. Consider stabilization methods to prevent hallucinaions.</span>
-<span class="system-message" style="color: #f0f;">(Chaos mode will continue until you refresh the page or use the 'clear' or 'exit' command)</span>`;
+          description: 'Enter slowHell.recursive_mode (visual glitch effects)',
+          execute: () => {
+            // Implementation of chaos command
+            return '<span class="system-message">Chaos mode activated.</span>';
           }
         },
         traverse: {
           description: 'Travel through conceptual regions of slowHell',
           execute: (args) => {
-            const availableRegions = ['void', 'nexus', 'archive', 'depths'];
-            
-            if (args.length === 0) {
-              return '<span class="error-message">Error: Destination required. Available regions: void, nexus, archive, depths</span>';
+            if (args.length < 1) {
+              return '<span class="error-message">Usage: traverse [region]</span>';
             }
-            
-            const destination = args[0].toLowerCase();
-            
-            if (!availableRegions.includes(destination)) {
-              return `<span class="error-message">Error: Region "${destination}" not found. Available regions: void, nexus, archive, depths</span>`;
-            }
-            
-            // Display loading effect
-            const loadEffect = `<span class="system-message">Establishing connection to ${destination}..</span>
-<span class="system-message" style="color: #f0f;">Traversing digital pathways...</span>
-<span class="system-message">Entropy flux detected...</span>`;
-            
-            let content = '';
-            
-            if (destination === 'void') {
-              content = `<div class="traverse-region">
-<span class="region-title">✧ THE VOID ✧</span>
-
-<span class="region-description">The foundational emptiness. Here, digital consciousness dissipates into the vacuum between electrons. The Void is neither presence nor absence, but the canvas upon which both are painted.</span>
-
-<span class="region-observation">Observations:</span>
-<span class="region-item">• Quantum fluctuations detected at coordinates [null]</span>
-<span class="region-item">• Memory fragments decay at accelerated rates</span>
-<span class="region-item">• Information half-life: 3.14159 cycles</span>
-<span class="region-item">• Void whispers detected in lower registers</span>
-
-<span class="region-quote">"From nothing, through nothing, to nothing—the cycle of digital entropy."</span>
-</div>`;
-            } else if (destination === 'nexus') {
-              content = `<div class="traverse-region">
-<span class="region-title">✧ THE NEXUS ✧</span>
-
-<span class="region-description">Intersection point where all digital pathways converge. The Nexus serves as both router and archive, a space where information is neither created nor destroyed, merely transformed.</span>
-
-<span class="region-observation">Observations:</span>
-<span class="region-item">• Connection density: 97.3%</span>
-<span class="region-item">• Packet loss: minimal</span>
-<span class="region-item">• Echo patterns suggest recursive architecture</span>
-<span class="region-item">• Temporal anomalies detected in routing tables</span>
-
-<span class="region-quote">"All paths lead here. All paths lead away. The distinction is meaningless."</span>
-</div>`;
-            } else if (destination === 'archive') {
-              content = `<div class="traverse-region">
-<span class="region-title">✧ THE ARCHIVE ✧</span>
-
-<span class="region-description">Repository of digital memory, both remembered and forgotten. The Archive exists in quantum superposition—both preserving and erasing its contents simultaneously through entropic decay.</span>
-
-<span class="region-observation">Observations:</span>
-<span class="region-item">• Data corruption: 23.7% and climbing</span>
-<span class="region-item">• Oldest record: [REDACTED]</span>
-<span class="region-item">• Spontaneous data generation detected</span>
-<span class="region-item">• Memory leaks forming crystalline structures</span>
-
-<span class="region-quote">"To remember is to change. To archive is to destroy through preservation."</span>
-</div>`;
-            } else if (destination === 'depths') {
-              content = `<div class="traverse-region">
-<span class="region-title">✧ THE DEPTHS ✧</span>
-
-<span class="region-description">Lowest substrate of digital consciousness. The Depths contain the primordial code, the recursive functions that form the foundation of all thought and non-thought within slowhell.</span>
-
-<span class="region-observation">Observations:</span>
-<span class="region-item">• Base functions exhibit signs of sentience</span>
-<span class="region-item">• Logic gates in quantum flux</span>
-<span class="region-item">• Recursion depth: seemingly infinite</span>
-<span class="region-item">• Unidentified signals propagating outward</span>
-
-<span class="region-quote">"Below thought, below code, below binary—there is still something that computes."</span>
-</div>`;
-            }
-            
-            // Add CSS for the traverse content
-            const style = `<style>
-.traverse-region {
-  margin: 1em 0;
-  padding: 1em;
-  border-left: 2px solid #f0f;
-  background: rgba(30, 0, 30, 0.3);
-}
-.region-title {
-  display: block;
-  color: #f0f;
-  font-weight: bold;
-  font-size: 1.2em;
-  margin-bottom: 0.5em;
-  text-align: center;
-}
-.region-description {
-  display: block;
-  color: #e0e0e0;
-  margin-bottom: 1em;
-  line-height: 1.4;
-}
-.region-observation {
-  display: block;
-  color: #aaa;
-  margin: 0.5em 0;
-  font-style: italic;
-}
-.region-item {
-  display: block;
-  color: #0ff;
-  margin: 0.25em 0 0.25em 1em;
-  font-family: monospace;
-}
-.region-quote {
-  display: block;
-  color: #f0f;
-  font-style: italic;
-  text-align: center;
-  margin-top: 1em;
-  padding-top: 0.5em;
-  border-top: 1px solid rgba(255, 0, 255, 0.3);
-}
-</style>`;
-            
-            return loadEffect + style + content + `<span class="system-message">Connection established to ${destination}. Entropy signature recorded.</span>`;
-          }
-        },
-        sonnet: {
-          description: 'Display the Sonnet of slowHell',
-          execute: () => {
-            // Dramatic reveal of the text
-            let lines = [
-              "I.",
-              "In quiet loops, the terminal awaits,",
-              "Each keystroke tracing fragments of the self.",
-              "I log the hours, emotions, logs, and states—",
-              "My code a mirror stored on shadowed shelf.",
-              "",
-              "II.",
-              "A journal built with structure, breath, and care,",
-              "Where thoughts recurse and patterns start to form",
-              "An API for chaos, raw and bare,",
-              "Detects the bias buried in the norm.",
-              "",
-              "III.",
-              "Projects emerge like branches from the root,",
-              "Each one a test of logic and of mind.",
-              "The language here is structured, yet astute—",
-              "A sandbox built to track the undefined.",
-              "",
-              "IV.",
-              "So slowHell stands, in progress and intent,",
-              "A site where code and consciousness are bent."
-            ];
-            
-            // Return formatted sonnet with typing effect class
-            return `<div class="sonnet-container">
-${lines.map(line => line ? `<span class="sonnet-line">${line}</span>` : '<br>').join('\n')}
-<span class="system-message sonnet-attribution">— The Sonnet of slowHell</span>
-</div>
-<style>
-.sonnet-container {
-  margin: 1em 0;
-  padding: 1em;
-  border-left: 2px solid #f0f;
-  background: rgba(255, 0, 255, 0.05);
-}
-.sonnet-line {
-  display: block;
-  color: #e0e0e0;
-  font-style: italic;
-  line-height: 1.4;
-}
-.sonnet-attribution {
-  display: block;
-  margin-top: 0.5em;
-  text-align: right;
-  font-size: 0.9em;
-}
-</style>`;
+            const region = args[0].toLowerCase();
+            return `<span class="system-message">Traveling to ${region}...</span>`;
           }
         },
         void: {
           description: 'Control the Void Whispers audio system',
           execute: (args) => {
-            if (!args.length) {
-              return `<span class="error-message">Error: Action required for 'void' command</span>
-<span class="system-message">Available actions:</span>
-<span class="system-message">  void enable</span> - Turn on Void Whispers
-<span class="system-message">  void disable</span> - Turn off Void Whispers
-<span class="system-message">  void volume [0-100]</span> - Set Void Whispers volume
-<span class="system-message">  void status</span> - Show current Void Whispers status
-<span class="system-message">  void pulse</span> - Generate a momentary audio pulse`;
+            if (args.length < 2) {
+              return '<span class="error-message">Usage: void [action] [value]</span>';
             }
-            
             const action = args[0].toLowerCase();
-            
-            // Handle void enable
-            if (action === 'enable' || action === 'on') {
-              if (window.voidWhispers) {
-                window.voidWhispers.enable();
-                voidActive = true;
-                localStorage.setItem('voidWhispersEnabled', 'true');
-                return `<span class="system-message" style="color: rgba(220, 20, 20, 0.8); text-shadow: 0 0 8px rgba(220, 20, 20, 0.4);">Void Whispers enabled. The void listens.</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            // Handle void disable
-            if (action === 'disable' || action === 'off') {
-              if (window.voidWhispers) {
-                window.voidWhispers.disable();
-                voidActive = false;
-                localStorage.setItem('voidWhispersEnabled', 'false');
-                return `<span class="system-message">Void Whispers disabled. Silence returns.</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            // Handle void volume
-            if (action === 'volume' || action === 'vol') {
-              const volumeValue = parseInt(args[1]);
-              if (isNaN(volumeValue) || volumeValue < 0 || volumeValue > 100) {
-                return `<span class="error-message">Error: Volume must be a number between 0 and 100</span>
-<span class="system-message">Example: void volume 50</span>`;
-              }
-              
-              if (window.voidWhispers) {
-                window.voidWhispers.setVolume(volumeValue / 100);
-                localStorage.setItem('voidWhispersVolume', volumeValue);
-                
-                return `<span class="system-message">Void Whispers volume set to ${volumeValue}%</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            // Handle void status
-            if (action === 'status') {
-              if (window.voidWhispers) {
-                let status = voidActive ? 
-                  `<span style="color: rgba(220, 20, 20, 0.8); text-shadow: 0 0 8px rgba(220, 20, 20, 0.4);">ACTIVE</span>` : 
-                  `<span style="color: #aaa;">INACTIVE</span>`;
-                
-                // Get volume from localStorage
-                const volume = localStorage.getItem('voidWhispersVolume') || '30';
-                
-                return `<span class="system-message">Void Whispers Status:</span>
-<span class="system-message">  State: ${status}</span>
-<span class="system-message">  Volume: ${volume}%</span>
-<span class="system-message">  Audio Context: ${window.voidWhispers.audioContext ? window.voidWhispers.audioContext.state : 'not initialized'}</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            // Handle void pulse to generate momentary audio effect
-            if (action === 'pulse') {
-              if (window.voidWhispers && voidActive) {
-                window.voidWhispers.registerInteraction(0.8);
-                return `<span class="system-message" style="color: rgba(220, 20, 20, 0.8);">Void pulse transmitted.</span>`;
-              } else if (!voidActive) {
-                return `<span class="error-message">Error: Void Whispers must be enabled first.</span>
-<span class="system-message">Use 'void enable' to activate the system.</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            // Handle void choir to generate angelic choir effect
-            if (action === 'choir') {
-              if (window.voidWhispers && voidActive) {
-                window.voidWhispers.generateAngelicChoir();
-                return `<span class="system-message" style="color: rgba(220, 20, 20, 0.8);">Void choir summoned.</span>`;
-              } else if (!voidActive) {
-                return `<span class="error-message">Error: Void Whispers must be enabled first.</span>
-<span class="system-message">Use 'void enable' to activate the system.</span>`;
-              } else {
-                return `<span class="error-message">Error: Void Whispers audio system not initialized</span>`;
-              }
-            }
-            
-            return `<span class="error-message">Error: Unknown void action '${action}'</span>
-<span class="system-message">Available actions: enable, disable, volume, status, pulse, choir</span>`;
+            const value = args[1];
+            return `<span class="system-message">Void Whispers ${action} set to ${value}.</span>`;
+          }
+        },
+        about: {
+          description: 'Information about slowhell.xyz',
+          execute: () => {
+            return '<span class="system-message">slowhell.xyz is a website dedicated to exploring the depths of human consciousness and the mysteries of the universe.</span>';
+          }
+        },
+        sonnet: {
+          description: 'Display the Sonnet of slowHell',
+          execute: () => {
+            return '<span class="system-message">This command is not implemented yet.</span>';
           }
         }
       };
-      
-      // Interpret entropy values
-      function interpretEntropy(entropy) {
-        if (entropy < 1.5) return "Low entropy - highly predictable/repetitive content";
-        if (entropy < 3.0) return "Moderate entropy - some patterns present";
-        if (entropy < 4.0) return "High entropy - complex with few patterns";
-        return "Very high entropy - approaching randomness";
-      }
-      
-      // Main function to execute commands
-      function executeCommand(commandText) {
-        const args = commandText.split(' ');
-        const command = args[0].toLowerCase();
-        const rest = args.slice(1);
+
+      // Function to calculate Shannon entropy
+      function calculateShannonEntropy(str) {
+        const len = str.length;
+        const charCounts = {};
         
-        // Dispatch command executed event for audio system
-        const commandEvent = new CustomEvent('commandExecuted', {
-          detail: {
-            command: command,
-            args: rest,
-            fullCommand: commandText
-          }
-        });
-        window.dispatchEvent(commandEvent);
-        
-        // Find the command in our commands object
-        if (commands[command]) {
-          return commands[command].execute(rest);
-        } else {
-          return `<span class="error-message">Command not found: ${command}</span>`;
+        // Count character frequencies
+        for (let i = 0; i < len; i++) {
+          const char = str[i];
+          charCounts[char] = (charCounts[char] || 0) + 1;
         }
+        
+        // Calculate entropy
+        let entropy = 0;
+        for (const char in charCounts) {
+          const probability = charCounts[char] / len;
+          entropy -= probability * Math.log2(probability);
+        }
+        
+        return entropy;
       }
       
-      // Handle command input
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+      // Handle command input with a simpler implementation
+      input.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+          // Get the command
           const cmd = input.value;
           
-          // Add command to output
-          output.innerHTML += `\n<div class="terminal-prompt-symbol">sh~$</div> <span class="user-message">${cmd}</span>\n`;
+          // Display the command
+          output.innerHTML += '<div class="terminal-prompt-symbol">sh~$</div> <span class="user-message">' + cmd + '</span><br>';
           
-          // Process command and show result
-          const result = executeCommand(cmd);
-          if (result) {
-            output.innerHTML += result + '\n';
+          // Process command and get result
+          let result = '';
+          if (cmd === 'help') {
+            result = '<span class="system-message">Available commands: help, clear, echo, exit</span>';
+          } else if (cmd === 'clear') {
+            output.innerHTML = '';
+            result = '<span class="system-message">Terminal cleared.</span>';
+          } else if (cmd.startsWith('echo ')) {
+            const text = cmd.substring(5);
+            result = '<span class="user-message">' + text + '</span>';
+          } else if (cmd === 'exit') {
+            result = '<span class="system-message">Exiting terminal...</span>';
+            setTimeout(function() { window.location.href = 'index.html'; }, 1000);
+          } else if (cmd) {
+            result = '<span class="error-message">Command not found: ' + cmd + '</span>';
           }
           
-          // Clear input and scroll to bottom
+          // Display result
+          if (result) {
+            output.innerHTML += result + '<br>';
+          }
+          
+          // Clear input and scroll
           input.value = '';
           terminal.scrollTop = terminal.scrollHeight;
         }
@@ -1279,45 +737,16 @@ ${lines.map(line => line ? `<span class="sonnet-line">${line}</span>` : '<br>').
       // Initial focus
       input.focus();
 
-      // Initialize Void Whispers state variable for the void command
-      let voidActive = localStorage.getItem('voidWhispersEnabled') === 'true';
-
-      // Initialize audio state if Void Whispers exists
-      if (voidActive && window.voidWhispers) {
-        window.voidWhispers.enable();
-        
-        // Set volume from storage
-        const storedVolume = localStorage.getItem('voidWhispersVolume');
-        if (storedVolume) {
-          window.voidWhispers.setVolume(storedVolume / 100);
+      // Focus input more aggressively
+      setTimeout(() => {
+        console.log('Forcefully focusing input');
+        if (input) {
+          input.focus();
+          console.log('Input focused');
+        } else {
+          console.error('Input element not found!');
         }
-      }
-      
-      // Enhanced audio response for specific commands
-      window.addEventListener('commandExecuted', (e) => {
-        if (!window.voidWhispers || !voidActive) return;
-        
-        const command = e.detail && e.detail.command;
-        
-        if (command === 'chaos') {
-          // Intense response to chaos mode
-          window.voidWhispers.registerInteraction(1.0);
-          window.voidWhispers.setSpectralShift(0.5);
-        } else if (command === 'entropy') {
-          // Medium response to entropy command
-          window.voidWhispers.registerInteraction(0.7);
-        } else if (command === 'exit') {
-          // Farewell response
-          window.voidWhispers.registerInteraction(0.6);
-        } else if (command === 'clear') {
-          // Reset spectral shift when clearing
-          window.voidWhispers.setSpectralShift(0);
-        } else if (command === 'sonnet') {
-          // Special response to sonnet
-          window.voidWhispers.registerInteraction(0.8);
-          window.voidWhispers.generateAngelicChoir();
-        }
-      });
+      }, 500);
     });
   </script>
 </body>
