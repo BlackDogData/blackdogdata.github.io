@@ -1,3 +1,5 @@
+# This comment is a test
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +30,25 @@
       padding: 2rem;
       max-width: 800px;
       position: relative;
+    }
+
+    .identity-line {
+      font-size: 1.1rem;
+      color: #cccccc;
+      margin-bottom: 1rem;
+    }
+
+    .tagline-line {
+      font-size: 1.25rem;
+      color: #ffffff;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .tagline-sub {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 2rem;
     }
 
     .corner-sigil {
@@ -168,9 +189,12 @@
         <text x="40.5" y="95" class="text">⠋⠙⠝</text>
       </svg>
     </div>
-    
+
     <h1>slowhell.xyz</h1>
-    <div class="subtitle">A digital sanctuary for code and consciousness</div>
+    <div class="identity-line">Dev • Entropy Architect • Father</div>
+    <div class="tagline-line">Engineering the Unseen</div>
+    <div class="tagline-sub">Where Consciousness Meets Code</div>
+    <div class="subtitle">Exploring experimental AI and introspective systems that convert noise into signal and honor the threshold between cognition and code.</div>
 
     <div class="nav-container">
       <a href="./about.html" class="nav-item">
@@ -210,19 +234,16 @@
 
   <footer>
     © 2024–2025 slowhell.xyz. All rights reserved.
-
-
   </footer>
 
   <script>
-    // Check if terminal was minimized
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('minimized') === 'true') {
       const minimizedTerminal = document.createElement('div');
       minimizedTerminal.className = 'minimized-terminal';
       minimizedTerminal.innerHTML = '<img src="favicon.svg" alt="Terminal">';
       minimizedTerminal.title = 'Restore Terminal';
-      
+
       const terminalTitle = document.createElement('div');
       terminalTitle.style.position = 'absolute';
       terminalTitle.style.top = '-30px';
@@ -236,24 +257,23 @@
       terminalTitle.style.opacity = '0';
       terminalTitle.style.transition = 'opacity 0.3s ease';
       terminalTitle.textContent = 'sh@slowhell.xyz:~';
-      
+
       minimizedTerminal.addEventListener('mouseover', () => {
         terminalTitle.style.opacity = '1';
       });
-      
+
       minimizedTerminal.addEventListener('mouseout', () => {
         terminalTitle.style.opacity = '0';
       });
-      
+
       minimizedTerminal.appendChild(terminalTitle);
-      
+
       minimizedTerminal.addEventListener('click', () => {
         window.location.href = 'terminal.html?restore=true';
       });
-      
+
       document.body.appendChild(minimizedTerminal);
-      
-      // Add subtle pulse effect occasionally
+
       setInterval(() => {
         if (Math.random() < 0.2) {
           minimizedTerminal.style.transform = 'scale(1.1)';
