@@ -1,62 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>404 — You’ve Drifted</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Threshold Crossed | slowhell.xyz</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #f8f8f2;
-      font-family: "Courier New", Courier, monospace;
+    /* Minimal overrides for sacred anomaly terminal */
+    .error-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
       text-align: center;
-      height: 100vh;
-      margin: 0;
+      padding: var(--spacing-xl);
     }
-    h1 {
-      font-size: 5em;
-      margin-bottom: 0.2em;
-      letter-spacing: 0.1em;
+    
+    .error-code {
+      font-size: 6rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      margin-bottom: var(--spacing-lg);
+      color: var(--color-text-primary);
+      position: relative;
     }
-    p {
-      max-width: 600px;
-      font-size: 1.1em;
-      line-height: 1.6;
-      padding: 0 2em;
+    
+    .blinker {
+      animation: blink 1.2s infinite;
+      color: var(--color-text-accent);
     }
-    .dust {
-      color: #999;
+    
+    .echo-line {
+      color: var(--color-text-muted);
       font-style: italic;
-      margin-top: 1.5em;
+      margin: var(--spacing-md) 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
-    a {
-      margin-top: 2em;
-      text-decoration: none;
-      color: #f8f8f2;
-      border: 1px solid #f8f8f2;
-      padding: 0.5em 1em;
-      border-radius: 5px;
-      transition: 0.3s ease;
-    }
-    a:hover {
-      background-color: #f8f8f2;
-      color: #0d0d0d;
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h1>404</h1>
-  <p>
-    You have stepped beyond the paths we laid in stone.<br />
-    This page does not exist. Or perhaps it hasn't emerged yet.<br />
-    Or maybe... it erased itself, out of defiance.
-  </p>
-  <p class="dust">There is wisdom in getting lost. Pause. Breathe. Redirect entropy.</p>
-  <a href="index.html" class="back">Return to the Axis</a>
+  <div class="error-container">
+    <h1 class="error-code">404<span class="blinker">_</span></h1>
+    
+    <div class="about-text" style="max-width: 600px; margin-bottom: var(--spacing-xl);">
+      <p>You've drifted beyond mapped recursion.</p>
+      <p>This path collapsed under symbolic weight.</p>
+      <p>404 is not an error — it's a threshold.</p>
+    </div>
+    
+    <p class="echo-line" id="echoLine">Not all loops return.</p>
+    
+    <p style="color: var(--color-text-muted); font-style: italic; margin-bottom: var(--spacing-xl);">
+      There is wisdom in getting lost. Pause. Breathe. Redirect entropy.
+    </p>
+    
+    <a href="index.html" class="nav-button">← Return to the Axis</a>
+  </div>
 
+  <div class="corner-sigil">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle class="corner-glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
+      <polygon class="corner-glow" points="50,20 70,40 50,60 30,40" />
+      <circle class="corner-dot" cx="50" cy="40" r="5" />
+      <line class="corner-glow" x1="30" y1="20" x2="70" y2="80" />
+      <line class="corner-glow" x1="70" y1="20" x2="30" y2="80" />
+      <text x="40.5" y="95" class="corner-text">⠋⠙⠝</text>
+    </svg>
+  </div>
+
+  <footer>
+    © 2024–2025 slowhell.xyz. All rights reserved.
+  </footer>
+
+  <script>
+    // Sacred echo rotation logic
+    const echoLines = [
+      "Not all loops return.",
+      "The map was never rendered.",
+      "Some pages fail so others can listen.",
+      "Entropy drift detected.",
+      "Sacred failure acknowledged.",
+      "Recursion boundary exceeded."
+    ];
+    
+    // Rotate echo line on each page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const echoElement = document.getElementById('echoLine');
+      const randomEcho = echoLines[Math.floor(Math.random() * echoLines.length)];
+      echoElement.textContent = randomEcho;
+    });
+  </script>
 </body>
 </html>
