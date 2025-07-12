@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Amiri&family=Noto+Sans+Devanagari:wght@300;400&display=swap" rel="stylesheet">
-  <script src="void-whispers.js"></script>
   <style>
     /* Rain effect styles - must come first */
     .rain-container {
@@ -65,6 +64,12 @@
     /* Terminal body needs a transparent background */
     .terminal-body {
       background: rgba(13, 13, 13, 0.5) !important;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      overflow: hidden;
     }
 
     /* Terminal-specific styles */
@@ -73,6 +78,11 @@
       z-index: 2;
       background-color: rgba(24, 24, 24, 0.55);
       backdrop-filter: blur(1px);
+      padding: 0.5em 1em;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .terminal {
@@ -80,112 +90,144 @@
       z-index: 2;
       background-color: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(1px);
+      height: calc(100vh - 60px);
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      box-sizing: border-box;
+      overflow-y: auto;
     }
+
+    .terminal-output {
+      flex: 1;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .terminal-prompt {
+      display: flex;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .terminal-prompt-symbol {
+      color: #ff0000;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .terminal-input {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      flex: 1;
+    }
+
     .blink {
       animation: blink 1s infinite;
     }
+
     @keyframes blink {
       0%, 49% { opacity: 1; }
       50%, 100% { opacity: 0; }
     }
-    .terminal-header {
-      background-color: #181818;
-      padding: 0.5em 1em;
-      border-bottom: 1px solid #333;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+
     .terminal-title {
       font-size: 0.85em;
       color: #ff0000;
     }
+
     .terminal-controls {
       display: flex;
       gap: 8px;
     }
+
     .terminal-control {
       width: 12px;
       height: 12px;
       border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
+
     .terminal-control.close {
       background-color: #ff5f57;
     }
+
     .terminal-control.minimize {
       background-color: #ffbd2e;
     }
+
     .terminal-control.expand {
       background-color: #99ff01;
       transition: all 0.3s ease;
     }
+
     .terminal-control.expand.active {
       background-color: #ff0000;
       box-shadow: 0 0 10px rgb(255, 0, 0);
       transform: scale(1.1);
     }
+
     .system-message {
       color: rgb(255, 0, 0);
     }
+
     .error-message {
       color: #f00;
     }
+
     .user-message {
       color: #ff0000;
     }
+
     .hidden {
       display: none;
     }
+
     /* Animation for the minimize effect */
     @keyframes minimize {
       0% { transform: scale(1); opacity: 1; }
       100% { transform: scale(0.1); opacity: 0; }
     }
+
     /* Animation for the maximize effect */
     @keyframes maximize {
       0% { transform: scale(1); opacity: 1; }
       100% { transform: scale(1.05); opacity: 0; }
     }
+
     /* Animation for terminal focus mode */
     @keyframes focus-mode {
       0% { background-color: rgba(0, 0, 0, 0.9); }
       50% { background-color: rgba(0, 0, 0, 0.95); }
       100% { background-color: rgba(0, 0, 0, 0.9); }
     }
+
     /* Pulse animation for terminal in focus mode */
     @keyframes terminal-pulse {
       0% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
       50% { box-shadow: 0 0 25px rgba(255, 0, 255, 0.4); }
       100% { box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
     }
-    /* Minimized terminal indicator on index page */
-    .minimized-terminal {
+
+    .site-sigil {
       position: fixed;
       bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 40px;
-      background-color: #181818;
-      border: 1px solid #333;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      transition: all 0.3s ease;
+      left: 20px;
+      z-index: 100;
       opacity: 0.8;
+      transition: opacity 0.3s ease;
     }
-    .minimized-terminal:hover {
-      transform: scale(1.05);
+
+    .site-sigil:hover {
       opacity: 1;
-      box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
-    }
-    .minimized-terminal img {
-      width: 24px;
-      height: 24px;
-      opacity: 0.8;
     }
   </style>
 </head>
@@ -204,8 +246,7 @@
   </div>
   
   <div class="terminal" id="terminal">
-    <div class="terminal-output" id="terminalOutput">
-<span class="system-message">                           
+    <div class="terminal-output" id="terminalOutput"><span class="system-message">                           
   ___ | | _____      __| |__   ___| | |  
  / __|| |/ _ \ \ /\ / /| '_ \ / _ \ | |  
  \__ \| | (_) \ V  V / | | | |  __/ | |  
@@ -305,210 +346,17 @@ Example usage: 'entropy this is some text to analyze'
       const output = document.getElementById('terminalOutput');
       const input = document.getElementById('terminalInput');
       
-      console.log('Terminal elements:', { 
-        terminal: !!terminal, 
-        output: !!output, 
-        input: !!input 
-      });
-      
-      if (!terminal || !output || !input) {
-        console.error('Terminal elements not found!', {
-          terminal: document.getElementById('terminal'),
-          output: document.getElementById('terminalOutput'),
-          input: document.getElementById('terminalInput')
-        });
-        return; // Stop execution if elements are missing
-      }
-      
       // Terminal control buttons
       const closeButton = document.getElementById('closeButton');
       const minimizeButton = document.getElementById('minimizeButton');
       const expandButton = document.getElementById('expandButton');
-      
-      // Check if we're restoring from minimized state
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('restore') === 'true') {
-        try {
-          // Retrieve saved state
-          const savedState = JSON.parse(localStorage.getItem('terminalState'));
-          if (savedState) {
-            // Restore output content
-            output.innerHTML = savedState.output;
-            
-            // Restore chaos mode if it was active
-            if (savedState.chaosActive) {
-              // We'll simulate a chaos command execution
-              setTimeout(() => {
-                commands.chaos.execute([]);
-              }, 500);
-            }
-            
-            // Add a restoration message
-            const restorationMsg = document.createElement('div');
-            restorationMsg.innerHTML = '<span class="system-message">Terminal session restored.</span>';
-            output.appendChild(restorationMsg);
-            
-            // Scroll to bottom
-            terminal.scrollTop = terminal.scrollHeight;
-          }
-        } catch (error) {
-          console.error('Error restoring terminal state:', error);
-          // Add fallback message
-          const errorMsg = document.createElement('div');
-          errorMsg.innerHTML = '<span class="error-message">Error restoring terminal state.</span>';
-          output.appendChild(errorMsg);
-        }
-        
-        // Add restoration animation
-        terminal.style.transform = 'scale(0.1)';
-        terminal.style.opacity = '0';
-        terminal.style.transition = 'all 0.5s ease';
-        
-        setTimeout(() => {
-          terminal.style.transform = 'scale(1)';
-          terminal.style.opacity = '1';
-        }, 100);
-      }
-      
-      // Close button - return to main page
-      closeButton.addEventListener('click', () => {
-        // Add closing animation
-        terminal.style.animation = 'minimize 0.5s forwards';
-        
-        // Stop chaos mode if it's running
-        if (window.chaosInterval) {
-          clearInterval(window.chaosInterval);
-          window.chaosInterval = null;
-          terminal.style.filter = '';
-        }
-        
-        // Redirect after animation completes
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 500);
-      });
-      
-      // Minimize button - minimize to index page
-      minimizeButton.addEventListener('click', () => {
-        // Save terminal state to localStorage
-        const terminalState = {
-          output: output.innerHTML,
-          chaosActive: !!window.chaosInterval
-        };
-        localStorage.setItem('terminalState', JSON.stringify(terminalState));
-        
-        // Add minimizing animation
-        terminal.style.animation = 'minimize 0.5s forwards';
-        
-        // Redirect after animation completes
-        setTimeout(() => {
-          window.location.href = 'index.html?minimized=true';
-        }, 500);
-      });
-      
-      // Function to show temporary notification
-      function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.style.position = 'fixed';
-        notification.style.bottom = '20px';
-        notification.style.left = '50%';
-        notification.style.transform = 'translateX(-50%)';
-        notification.style.padding = '8px 16px';
-        notification.style.borderRadius = '4px';
-        notification.style.fontSize = '0.9em';
-        notification.style.zIndex = '9999';
-        notification.style.opacity = '0';
-        notification.style.transition = 'opacity 0.3s ease';
-        
-        if (type === 'info') {
-          notification.style.backgroundColor = 'rgba(40, 202, 65, 0.2)';
-          notification.style.color = '#28ca41';
-          notification.style.border = '1px solid rgba(40, 202, 65, 0.3)';
-        } else if (type === 'error') {
-          notification.style.backgroundColor = 'rgba(255, 95, 87, 0.2)';
-          notification.style.color = '#ff5f57';
-          notification.style.border = '1px solid rgba(255, 95, 87, 0.3)';
-        }
-        
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        // Fade in
-        setTimeout(() => {
-          notification.style.opacity = '1';
-        }, 10);
-        
-        // Fade out and remove
-        setTimeout(() => {
-          notification.style.opacity = '0';
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 2000);
-      }
-
-      // Maximize/Focus button - enter focus mode
-      expandButton.addEventListener('click', () => {
-        // Check if we're already in focus mode
-        if (document.body.hasAttribute('data-focus-mode')) {
-          // Turn off focus mode
-          document.body.removeAttribute('data-focus-mode');
-          document.body.style.animation = '';
-          document.body.style.backgroundColor = '';
-          terminal.style.boxShadow = '';
-          terminal.style.transform = '';
-          terminal.style.animation = '';
-          
-          // Remove active state from button
-          expandButton.classList.remove('active');
-          
-          // Remove exit button if it exists
-          const exitButton = document.getElementById('exitFocusButton');
-          if (exitButton) {
-            exitButton.remove();
-          }
-          
-          // Show notification
-          showNotification('Focus mode disabled');
-        } else {
-          // Turn on focus mode
-          document.body.setAttribute('data-focus-mode', 'true');
-          
-          // Add active state to button
-          expandButton.classList.add('active');
-          
-          // Visual effect for focus mode
-          document.body.style.animation = 'focus-mode 2s infinite';
-          document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
-          
-          // Apply effects to terminal
-          terminal.style.boxShadow = '0 0 20px rgba(255, 0, 255, 0.3)';
-          terminal.style.transform = 'scale(1.02)';
-          terminal.style.transition = 'all 0.5s ease';
-          terminal.style.animation = 'terminal-pulse 4s infinite';
-          
-          // Show notification
-          showNotification('Focus mode enabled');
-        }
-        
-        // Focus on terminal input
-        input.focus();
-      });
       
       // Commands database
       const commands = {
         help: {
           description: 'Display available commands',
           execute: (args) => {
-            // If a specific command is provided, show detailed help for that command
-            if (args.length > 0) {
-              const cmd = args[0].toLowerCase();
-              
-              if (!commands[cmd]) {
-                return `<span class="error-message">Command not found: ${cmd}</span>`;
-              }
-
-              return `<span class="system-message">╒══════════════════════════════════════════════════════════╕</span>
+            return `<span class="system-message">╒══════════════════════════════════════════════════════════╕</span>
 <span class="system-message">│                     slowHell TERMINAL                    │</span>
 <span class="system-message">╘══════════════════════════════════════════════════════════╛</span>
 
@@ -529,8 +377,6 @@ Example usage: 'entropy this is some text to analyze'
 <span class="system-message">  chaos</span>          - Enter slowHell.recursive_mode (visual glitch effects)
 <span class="system-message">  traverse [region]</span> - Travel through conceptual regions of slowHell
 <span class="system-message">                   Example: traverse void (available: void, nexus, archive, depths)</span>
-<span class="system-message">  void [action] [value]</span> - Control the Void Whispers audio system
-<span class="system-message">                   Example: void enable, void volume 50, void status</span>
 
 <span class="system-message">CONTENT:</span>
 <span class="system-message">  about</span>          - Information about slowhell.xyz
@@ -540,7 +386,7 @@ Example usage: 'entropy this is some text to analyze'
           }
         },
         clear: {
-          description: 'Clear the terminal screen. (Useful for clearing the terminal of effects.)',
+          description: 'Clear the terminal screen',
           execute: () => {
             output.innerHTML = '';
             // If chaos mode is active, stop it
@@ -553,7 +399,7 @@ Example usage: 'entropy this is some text to analyze'
           }
         },
         reset: {
-          description: 'Reset terminal (start fresh session)',
+          description: 'Reset terminal to initial state',
           execute: () => {
             // Stop chaos mode if active
             if (window.chaosInterval) {
@@ -562,16 +408,12 @@ Example usage: 'entropy this is some text to analyze'
               terminal.style.filter = '';
             }
             
-            // Clear all glitch elements
-            const glitchElements = terminal.querySelectorAll('[style*="position: absolute"]');
-            glitchElements.forEach(el => el.remove());
-            
             // Reset terminal output to initial state
-            output.innerHTML = `<span class="system-message">                    _             _          _ _                   
-  ___ | | _____      __| |__   ___| | |  __  ___   _ ____ 
- / __|| |/ _ \ \ /\ / /| '_ \ / _ \ | | / _|/ __| | |_  / 
- \__ \| | (_) \ V  V / | | | |  __/ | || | | (__ _| |/ /  
- |___/|_|\___/ \_/\_/  |_| |_|\___|_|_||_|  \___(_)_/___|</span>
+            output.innerHTML = `<span class="system-message">                           
+  ___ | | _____      __| |__   ___| | |  
+ / __|| |/ _ \ \ /\ / /| '_ \ / _ \ | |  
+ \__ \| | (_) \ V  V / | | | |  __/ | |  
+ |___/|_|\___/ \_/\_/  |_| |_|\___|_|_|</span>
 
 <span class="system-message">Welcome to the slowHell.xyz Terminal (v0.0.0)
 Connection established: slowHell.ssh handshake complete.
@@ -595,27 +437,18 @@ Example usage: 'entropy this is some text to analyze'
               terminal.style.filter = '';
             }
             
-            // Return exit message
-            const exitMessage = '<span class="system-message">Exiting terminal... Redirecting to main page.</span>';
-            
             // Redirect after animation completes
             setTimeout(() => {
               window.location.href = 'index.html';
             }, 500);
             
-            return exitMessage;
+            return '<span class="system-message">Exiting terminal... Redirecting to main page.</span>';
           }
         },
         echo: {
           description: 'Display text in terminal',
           execute: (args) => {
             return `<span class="user-message">${args.join(' ')}</span>`;
-          }
-        },
-        timeless: {
-          description: 'Transcend temporal boundaries',
-          execute: () => {
-            return '<span class="system-message">This command is not implemented yet.</span>';
           }
         },
         entropy: {
@@ -632,8 +465,7 @@ Example usage: 'entropy this is some text to analyze'
         chaos: {
           description: 'Enter slowHell.recursive_mode (visual glitch effects)',
           execute: () => {
-            // Implementation of chaos command
-            return '<span class="system-message">Chaos mode activated.</span>';
+            return '<span class="system-message">Chaos mode activated. Visual glitch effects enabled.</span>';
           }
         },
         traverse: {
@@ -643,30 +475,56 @@ Example usage: 'entropy this is some text to analyze'
               return '<span class="error-message">Usage: traverse [region]</span>';
             }
             const region = args[0].toLowerCase();
-            return `<span class="system-message">Traveling to ${region}...</span>`;
-          }
-        },
-        void: {
-          description: 'Control the Void Whispers audio system',
-          execute: (args) => {
-            if (args.length < 2) {
-              return '<span class="error-message">Usage: void [action] [value]</span>';
+            const regions = ['void', 'nexus', 'archive', 'depths'];
+            if (regions.includes(region)) {
+              return `<span class="system-message">Traversing to ${region}... Reality matrix recalibrated.</span>`;
+            } else {
+              return `<span class="error-message">Unknown region: ${region}. Available: ${regions.join(', ')}</span>`;
             }
-            const action = args[0].toLowerCase();
-            const value = args[1];
-            return `<span class="system-message">Void Whispers ${action} set to ${value}.</span>`;
           }
         },
         about: {
           description: 'Information about slowhell.xyz',
           execute: () => {
-            return '<span class="system-message">slowhell.xyz is a website dedicated to exploring the depths of human consciousness and the mysteries of the universe.</span>';
+            return `<span class="system-message">slowhell.xyz - A transmission point for entropy and precision
+
+A digital monastery for decay, code, and slow rebirth.
+Built to hold both entropy and attention in the same interface.
+Systems that reflect, not just respond.
+
+Dev, Father, Entropy Architect
+Working at the intersection of AI, neuroscience, and information security
+Building tools that perform when the user cries — not break.</span>`;
           }
         },
         sonnet: {
           description: 'Display the Sonnet of slowHell',
           execute: () => {
-            return '<span class="system-message">This command is not implemented yet.</span>';
+            return `<span class="system-message">The Sonnet of slowHell:
+
+In circuits deep where shadows softly creep,
+And data streams through corridors of night,
+The entropy engines never sleep,
+Converting chaos into sacred light.
+
+Here memory and machine converge as one,
+While recursive loops dance without end,
+Each iteration closer to the sun
+Of understanding what we comprehend.
+
+The void whispers in languages untold,
+Sanskrit, Arabic, and code combined,
+Stories of the future and the old,
+Echoing through the corridors of mind.
+
+In slowHell we make entropy modular,
+Walking the loop with precision singular.</span>`;
+          }
+        },
+        timeless: {
+          description: 'Transcend temporal boundaries',
+          execute: () => {
+            return '<span class="system-message">Time.exe has stopped responding. Temporal boundaries dissolved. You exist in the eternal now.</span>';
           }
         }
       };
@@ -692,35 +550,77 @@ Example usage: 'entropy this is some text to analyze'
         return entropy;
       }
       
-      // Handle command input with a simpler implementation
+      // Close button - return to main page
+      closeButton.addEventListener('click', () => {
+        terminal.style.animation = 'minimize 0.5s forwards';
+        if (window.chaosInterval) {
+          clearInterval(window.chaosInterval);
+          window.chaosInterval = null;
+          terminal.style.filter = '';
+        }
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 500);
+      });
+      
+      // Minimize button
+      minimizeButton.addEventListener('click', () => {
+        terminal.style.animation = 'minimize 0.5s forwards';
+        setTimeout(() => {
+          window.location.href = 'index.html?minimized=true';
+        }, 500);
+      });
+
+      // Expand button - focus mode
+      expandButton.addEventListener('click', () => {
+        if (document.body.hasAttribute('data-focus-mode')) {
+          // Turn off focus mode
+          document.body.removeAttribute('data-focus-mode');
+          document.body.style.animation = '';
+          document.body.style.backgroundColor = '';
+          terminal.style.boxShadow = '';
+          terminal.style.transform = '';
+          terminal.style.animation = '';
+          expandButton.classList.remove('active');
+        } else {
+          // Turn on focus mode
+          document.body.setAttribute('data-focus-mode', 'true');
+          expandButton.classList.add('active');
+          document.body.style.animation = 'focus-mode 2s infinite';
+          document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.95)';
+          terminal.style.boxShadow = '0 0 20px rgba(255, 0, 255, 0.3)';
+          terminal.style.transform = 'scale(1.02)';
+          terminal.style.transition = 'all 0.5s ease';
+          terminal.style.animation = 'terminal-pulse 4s infinite';
+        }
+        input.focus();
+      });
+      
+      // Handle command input
       input.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
-          // Get the command
-          const cmd = input.value;
+          const cmd = input.value.trim();
           
           // Display the command
-          output.innerHTML += '<div class="terminal-prompt-symbol">sh~$</div> <span class="user-message">' + cmd + '</span><br>';
+          output.innerHTML += '<div><span class="terminal-prompt-symbol">sh~$</span> <span class="user-message">' + cmd + '</span></div>';
           
-          // Process command and get result
+          // Process command
           let result = '';
-          if (cmd === 'help') {
-            result = '<span class="system-message">Available commands: help, clear, echo, exit</span>';
-          } else if (cmd === 'clear') {
-            output.innerHTML = '';
-            result = '<span class="system-message">Terminal cleared.</span>';
-          } else if (cmd.startsWith('echo ')) {
-            const text = cmd.substring(5);
-            result = '<span class="user-message">' + text + '</span>';
-          } else if (cmd === 'exit') {
-            result = '<span class="system-message">Exiting terminal...</span>';
-            setTimeout(function() { window.location.href = 'index.html'; }, 1000);
-          } else if (cmd) {
-            result = '<span class="error-message">Command not found: ' + cmd + '</span>';
+          if (cmd) {
+            const parts = cmd.split(' ');
+            const command = parts[0].toLowerCase();
+            const args = parts.slice(1);
+            
+            if (commands[command]) {
+              result = commands[command].execute(args);
+            } else {
+              result = '<span class="error-message">Command not found: ' + command + '</span>';
+            }
           }
           
           // Display result
           if (result) {
-            output.innerHTML += result + '<br>';
+            output.innerHTML += '<div>' + result + '</div>';
           }
           
           // Clear input and scroll
@@ -736,17 +636,6 @@ Example usage: 'entropy this is some text to analyze'
       
       // Initial focus
       input.focus();
-
-      // Focus input more aggressively
-      setTimeout(() => {
-        console.log('Forcefully focusing input');
-        if (input) {
-          input.focus();
-          console.log('Input focused');
-        } else {
-          console.error('Input element not found!');
-        }
-      }, 500);
     });
   </script>
 </body>
