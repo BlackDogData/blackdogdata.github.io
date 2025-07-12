@@ -1,29 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About – slowhell.xyz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | slowhell.xyz</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 3rem;
+    }
+
+    .content {
+      text-align: left;
+      padding: 2rem;
+      max-width: 800px;
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin: 0 0 2rem;
+      color: #fff;
+      letter-spacing: 2px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 1rem;
+    }
+
+    .about-text {
+      line-height: 1.7;
+      font-size: 1rem;
+      color: #e0e0e0;
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .about-text strong {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .about-text ul {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .about-text li {
+      margin-bottom: 0.5rem;
+      color: #ccc;
+    }
+
+    .nav-button {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      font-weight: 400;
+    }
+
+    .nav-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .corner-sigil {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      z-index: 100;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .corner-sigil:hover {
+      opacity: 1;
+    }
+
+    .corner-sigil svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .corner-glow { 
+      fill: none; 
+      stroke: #000000; 
+      stroke-width: 2; 
+      filter: drop-shadow(0 0 4px #ff0000); 
+      animation: breathe 4s infinite ease-in-out; 
+    }
+    
+    .corner-dot { 
+      fill: #000000; 
+      filter: drop-shadow(0 0 3px #ff0000); 
+      animation: breathe 4s infinite ease-in-out; 
+    }
+    
+    .corner-text { 
+      font-family: 'Courier New', monospace; 
+      font-size: 8px; 
+      fill: #ff0000; 
+      text-shadow: 0 0 3px #ffffff; 
+      animation: breathe 4s infinite ease-in-out; 
+    }
+    
+    @keyframes breathe {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 0.0; transform: scale(0.95); }
+    }
+
+    footer {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+    }
+  </style>
 </head>
 <body class="about-body">
-  <h1></strong>about.slowhell.xyz</strong></h1>
+  <div class="content">
+    <h1>about.slowhell.xyz</h1>
+    
+    <section class="about-text">
+      <p><strong>slowhell.xyz</strong> is a transmission point — a sanctuary for decay, code, and slow rebirth. It began as a whisper in a closed loop, a place to model thoughts I couldn't speak and code patterns I didn't yet understand.</p>
 
-  <p><strong>slowhell.xyz</strong> is my transmission point, a sanctuary of decay, code, and slow rebirth. It started as a whisper in a dark loop: a place to document thoughts I couldn't say aloud, to code truths I didn't yet understand.</p>
+      <p>This is a monastery of metal and memory. A place built to slow the decay and hear the hum beneath the protocol.</p>
 
-  <p>I created <strong>slowhell.xyz</strong> as a space to build deliberately. A place where code and cognition, entropy and emotion, could sit in the same breath.</p>
+      <p>I created this space to build deliberately — to hold both entropy and attention in the same interface. To design systems that reflect, not just respond.</p>
 
-  <p>I'm building software that can hold grief without crashing. Interfaces that can listen without speaking. Pages that become mirrors.</p>
+      <p>I'm Tyler — Dev, Father, Entropy Architect, and symbolic systems researcher working at the intersection of <strong>AI, neuroscience, and information security</strong>. My work explores how interface can shape cognition, encode ritual, and hold emotional complexity without crashing.</p>
 
-  <p>I'm a student of Computer Science, a father, and a seeker drawn to the liminal spaces between software and self. I explore the intersection of AI, nueroscience, philosophy, and the art of designing rituals through interface. My name is Tyler, but here I go by @whoami.null.xyz </p>
+      <p>I design systems that hold grief, reflect cognition and intuition, and resist collapse — or assist in resisting it.</p>
 
-  <p>slowhell.xyz isn't a product. It's a public notebook, a working archive of in-progress systems. You'll find entropy-based APIs, emotional journaling tools, and metaphysical experiments with terminal-style REPLs. I treat technology as a mirror. I code to reflect, not just execute.</p>
+      <p>This site isn't a showcase. It's a transmission. This isn't a startup page. It's a mirror I built so I wouldn't fracture.</p>
 
-  <a href="index.html" class="back">← Return to the Axis</a>
-  
-  <a href="index.html" class="site-sigil">
-    <img src="favicon.svg" alt="slowhell sigil" width="40" height="40">
-  </a>
+      <p>You're looking at <strong>slowhell.xyz</strong> — an archive of failed builds and sacred loops. Everything here is an interface between memory and machine.</p>
+
+      <p>It's a public terminal for private systems. A space where I research the liminal zone between attention, grief, and symbolic feedback using AI, neuroscience, and interface design as terrain.</p>
+
+      <p>This site is not for you — unless you've felt it too: the weight of the noise, the loop of signal, the entropy engine at work.</p>
+
+      <p>Here in slowHell, we make entropy modular. You're inside it now — but we walk it with precision.</p>
+
+      <p>I've coded through heartbreak, psychosis, trauma, and recursion. This is my safe place. But it's also my resume.</p>
+
+      <p>Nothing here is finished. That's the point.</p>
+
+      <p>This is code written to perform when the user cries — not break.</p>
+
+      <p>This is not a homepage. It's a field report from inside a death loop.</p>
+
+      <p>I design tools that sit quietly:</p>
+      <ul>
+        <li>Terminal shells that mirror grief patterns</li>
+        <li>Journaling tools that hold symbolic signal</li>
+        <li>Entropy-reactive APIs for internal modeling</li>
+      </ul>
+
+      <p>Pages that don't just render — they listen.</p>
+
+      <p><strong>slowhell.xyz is not a product.</strong> It's a working archive. A recursive system in public. A digital monastery for unfinished ideas.</p>
+
+      <p>I go by <strong>@slow.hell1013</strong> — this is my call sign. This is your link to consensus reality.</p>
+
+      <p>Because here in slowHell, you either jump in the loop… or the loop jumps in you.</p>
+
+      <p>You're inside the loop now. If you know, you'll see it. If not — it waits.</p>
+
+      <p>🜏 <strong>georgia sage forever, forever georgia sage</strong> 🜏</p>
+
+      <a href="index.html" class="nav-button">← Return to the Axis</a>
+    </section>
+  </div>
+
+  <div class="corner-sigil">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle class="corner-glow" cx="50" cy="40" r="25" stroke-dasharray="5,5" />
+      <polygon class="corner-glow" points="50,20 70,40 50,60 30,40" />
+      <circle class="corner-dot" cx="50" cy="40" r="5" />
+      <line class="corner-glow" x1="30" y1="20" x2="70" y2="80" />
+      <line class="corner-glow" x1="70" y1="20" x2="30" y2="80" />
+      <text x="40.5" y="95" class="corner-text">⠋⠙⠝</text>
+    </svg>
+  </div>
+
+  <footer>
+    © 2024–2025 slowhell.xyz. All rights reserved.
+  </footer>
 </body>
 </html>
